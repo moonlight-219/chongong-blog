@@ -8,7 +8,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 import { profile } from "@/data/profile";
@@ -74,7 +74,7 @@ export function Navbar() {
             backdropFilter: backdrop,
             WebkitBackdropFilter: backdrop,
           }}
-          className="absolute inset-0 bg-[var(--card)]/70 pointer-events-none"
+          className="absolute inset-0 bg-[var(--card)]/80 pointer-events-none"
         />
         {/* 底边线层:独立 opacity,避免被整层模糊吃掉 */}
         <motion.div
@@ -83,17 +83,30 @@ export function Navbar() {
           className="absolute inset-x-0 bottom-0 h-px bg-[var(--border)] pointer-events-none"
         />
 
-        <nav className="relative max-w-6xl mx-auto px-6 flex items-center justify-between">
-          <ul className="hidden md:flex items-center gap-1">
+        <nav className="relative max-w-7xl mx-auto px-6 flex items-center justify-between">
+          {/* Logo区域 */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 font-bold text-lg">
+              <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center">
+                <Sparkles size={16} className="text-white" />
+              </div>
+              <span className="bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent">
+                {profile.nameEn}
+              </span>
+            </div>
+          </div>
+
+          {/* 桌面端导航 */}
+          <ul className="hidden md:flex items-center gap-1 bg-black/5 dark:bg-white/5 rounded-full p-1">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
                   className={cn(
-                    "relative px-4 py-2 text-sm font-medium rounded-full transition-colors",
+                    "relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300",
                     active === item.href
-                      ? "text-white"
-                      : "opacity-70 hover:opacity-100"
+                      ? "text-white shadow-lg"
+                      : "opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/5"
                   )}
                 >
                   {active === item.href && (
@@ -109,10 +122,11 @@ export function Navbar() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-2">
+          {/* 右侧操作区 */}
+          <div className="flex items-center gap-3">
             <ThemeToggle />
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+              className="md:hidden p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               onClick={() => setOpen((v) => !v)}
               aria-label="菜单"
             >
@@ -126,7 +140,7 @@ export function Navbar() {
           <motion.ul
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative md:hidden mt-3 mx-6 glass rounded-2xl overflow-hidden"
+            className="relative md:hidden mt-3 mx-6 glass rounded-2xl overflow-hidden shadow-xl"
           >
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
@@ -134,8 +148,10 @@ export function Navbar() {
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "block px-5 py-3 text-sm border-b border-[var(--border)] last:border-0",
-                    active === item.href && "text-indigo-500 font-medium"
+                    "block px-5 py-3 text-sm border-b border-[var(--border)] last:border-0 transition-colors",
+                    active === item.href 
+                      ? "bg-indigo-500/10 text-indigo-500 font-medium" 
+                      : "hover:bg-black/5 dark:hover:bg-white/5"
                   )}
                 >
                   {item.label}

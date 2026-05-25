@@ -1,4 +1,4 @@
-import { Mail, Phone, Heart } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { GiteeIcon } from "@/components/icons/Gitee";
 import { profile } from "@/data/profile";
 
@@ -7,8 +7,7 @@ export function Footer() {
     <footer className="relative mt-20 border-t border-[var(--border)] py-10 px-6">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="text-sm opacity-60">
-          © {new Date().getFullYear()} {profile.name} · 用{" "}
-          <Heart size={12} className="inline -mt-0.5 text-pink-500 fill-pink-500" /> 与代码构建
+          © {new Date().getFullYear()} {profile.name} · 前端开发工程师
         </div>
         <div className="flex items-center gap-3">
           <a
