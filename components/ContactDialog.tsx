@@ -1,13 +1,14 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, X } from "lucide-react";
+import { Copy, Check, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 
 interface ContactDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  type: "email" | "phone";
   title: string;
   content: string;
   actionLabel?: string;
@@ -17,6 +18,7 @@ interface ContactDialogProps {
 export default function ContactDialog({
   isOpen,
   onClose,
+  type,
   title,
   content,
   actionLabel,
@@ -34,37 +36,54 @@ export default function ContactDialog({
     }
   };
 
+  const Icon = type === "email" ? Mail : Phone;
+  const bannerGradient =
+    type === "email"
+      ? "from-indigo-500/15 via-violet-500/10 to-transparent"
+      : "from-green-500/15 via-emerald-500/10 to-transparent";
+  const iconStyle =
+    type === "email"
+      ? { background: "#6366f11a", color: "#6366f1" }
+      : { background: "#22c55e1a", color: "#22c55e" };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
-            <button
-              onClick={onClose}
-              className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </button>
+      <DialogContent className="sm:max-w-xs p-0 overflow-hidden gap-0 border-[var(--border)]">
+        {/* Banner */}
+        <div className={`flex flex-col items-center gap-3 bg-gradient-to-b ${bannerGradient} px-6 pt-9 pb-6`}>
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            style={iconStyle}
+          >
+            <Icon size={26} />
           </div>
-          <DialogDescription className="text-base pt-2">
+          <DialogTitle className="text-base font-semibold">{title}</DialogTitle>
+        </div>
+
+        {/* Body */}
+        <div className="px-5 pt-4 pb-6 space-y-3">
+          <DialogDescription className="text-center font-mono text-sm font-semibold tracking-wide py-3 px-4 rounded-xl bg-black/[0.05] dark:bg-white/[0.07] text-[var(--foreground)]">
             {content}
           </DialogDescription>
-        </DialogHeader>
-        
-        <div className="flex flex-col gap-2 mt-4">
-          <Button 
-            onClick={handleCopy} 
-            variant="outline" 
-            className="w-full"
+
+          <Button
+            onClick={handleCopy}
+            variant="outline"
+            className="w-full gap-2 h-10"
           >
-            <Copy className="mr-2 h-4 w-4" />
-            {copied ? "已复制" : "复制内容"}
+            {copied ? (
+              <Check size={15} className="text-green-500" />
+            ) : (
+              <Copy size={15} />
+            )}
+            {copied ? "已复制!" : "复制"}
           </Button>
-          
+
           {actionLabel && actionHref && (
-            <Button asChild className="w-full">
+            <Button
+              asChild
+              className="w-full h-10 bg-gradient-to-r from-indigo-500 to-pink-500 border-0 text-white hover:opacity-90 hover:bg-none"
+            >
               <a href={actionHref} onClick={onClose}>
                 {actionLabel}
               </a>

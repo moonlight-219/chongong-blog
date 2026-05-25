@@ -5,6 +5,7 @@ import { ArrowDown, Mail, Phone, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { GiteeIcon } from "@/components/icons/Gitee";
 import { profile } from "@/data/profile";
+import ContactDialog from "@/components/ContactDialog";
 
 function useTypewriter(words: string[], speed = 90, pause = 1400) {
   const [idx, setIdx] = useState(0);
@@ -38,6 +39,8 @@ function useTypewriter(words: string[], speed = 90, pause = 1400) {
 
 export function Hero() {
   const typed = useTypewriter(profile.taglines);
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+  const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
 
   return (
     <section
@@ -116,21 +119,40 @@ export function Hero() {
             <GiteeIcon size={18} className="text-[#c71d23]" />
             Gitee
           </a>
-          <a
-            href={`mailto:${profile.email}`}
+          <button
+            onClick={() => setEmailDialogOpen(true)}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass hover:border-indigo-500/50 transition-colors"
           >
             <Mail size={18} />
             邮箱
-          </a>
-          <a
-            href={`tel:${profile.phone}`}
+          </button>
+          <button
+            onClick={() => setPhoneDialogOpen(true)}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass hover:border-indigo-500/50 transition-colors"
           >
             <Phone size={18} />
             {profile.phone}
-          </a>
+          </button>
         </motion.div>
+
+        <ContactDialog
+          isOpen={emailDialogOpen}
+          onClose={() => setEmailDialogOpen(false)}
+          type="email"
+          title="邮箱地址"
+          content={profile.email}
+          actionLabel="发送邮件"
+          actionHref={`mailto:${profile.email}`}
+        />
+        <ContactDialog
+          isOpen={phoneDialogOpen}
+          onClose={() => setPhoneDialogOpen(false)}
+          type="phone"
+          title="联系电话"
+          content={profile.phone}
+          actionLabel="拨打电话"
+          actionHref={`tel:${profile.phone}`}
+        />
 
         {/* 向下提示 */}
         <motion.a

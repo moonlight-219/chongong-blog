@@ -2,19 +2,19 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Phone, Sparkles, Award, History, Smartphone, BarChart3, Zap, Bot } from "lucide-react";
+import { Mail, Phone, Sparkles, Award, History, Smartphone, BarChart3, Zap, Bot, Calendar, GraduationCap, Building2, Briefcase, MapPin, Banknote } from "lucide-react";
 import { SectionWrapper } from "./SectionWrapper";
 import { GiteeIcon } from "@/components/icons/Gitee";
 import { profile } from "@/data/profile";
 import ContactDialog from "@/components/ContactDialog";
 
-const INFO_ROWS: [string, string][] = [
-  ["年龄", "22 岁"],
-  ["学历", "本科 · 软件工程技术"],
-  ["院校", "湖南软件职业技术大学"],
-  ["求职意向", "前端开发 / 全栈"],
-  ["期望城市", "长沙 / 杭州 / 深圳"],
-  ["期望薪资", "6-9K"],
+const INFO_ROWS = [
+  { label: "年龄",   value: "22 岁",             icon: Calendar,      color: "#6366f1" },
+  { label: "学历",   value: "本科·软件工程技术",    icon: GraduationCap, color: "#8b5cf6" },
+  { label: "院校",   value: "湖南软件职业技术大学",  icon: Building2,     color: "#ec4899" },
+  { label: "求职意向", value: "前端 / 全栈",         icon: Briefcase,     color: "#f59e0b" },
+  { label: "期望城市", value: "长沙·杭州·深圳",      icon: MapPin,        color: "#10b981" },
+  { label: "期望薪资", value: "6–9K",              icon: Banknote,      color: "#22c55e" },
 ];
 
 const HIGHLIGHTS = [
@@ -77,20 +77,24 @@ function InfoCard() {
         </div>
       </div>
 
-      {/* 信息行 */}
-      <dl className="rounded-3xl glass p-5">
-        {INFO_ROWS.map(([k, v], i) => (
+      {/* 信息网格 */}
+      <div className="rounded-3xl glass p-4 grid grid-cols-2 gap-2">
+        {INFO_ROWS.map(({ label, value, icon: Icon, color }) => (
           <div
-            key={k}
-            className={`flex justify-between gap-4 py-2.5 text-sm ${
-              i < INFO_ROWS.length - 1 ? "border-b border-[var(--border)]" : ""
-            }`}
+            key={label}
+            className="flex flex-col gap-2 p-3 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-colors"
           >
-            <dt className="opacity-55 shrink-0">{k}</dt>
-            <dd className="font-medium text-right">{v}</dd>
+            <span
+              className="w-7 h-7 rounded-lg flex items-center justify-center"
+              style={{ background: `${color}1a`, color }}
+            >
+              <Icon size={14} />
+            </span>
+            <div className="text-[10px] opacity-45 font-medium leading-none">{label}</div>
+            <div className="text-xs font-semibold leading-snug">{value}</div>
           </div>
         ))}
-      </dl>
+      </div>
 
       {/* 联系按钮 */}
       <div className="grid grid-cols-3 gap-2">
@@ -125,6 +129,7 @@ function InfoCard() {
       <ContactDialog
         isOpen={emailDialogOpen}
         onClose={() => setEmailDialogOpen(false)}
+        type="email"
         title="邮箱地址"
         content={profile.email}
         actionLabel="发送邮件"
@@ -133,6 +138,7 @@ function InfoCard() {
       <ContactDialog
         isOpen={phoneDialogOpen}
         onClose={() => setPhoneDialogOpen(false)}
+        type="phone"
         title="联系电话"
         content={profile.phone}
         actionLabel="拨打电话"
