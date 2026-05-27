@@ -47,7 +47,7 @@ export function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center px-6 pt-24"
     >
-      <div className="max-w-6xl mx-auto w-full">
+      <div className="max-w-6xl mx-auto w-full relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
