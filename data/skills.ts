@@ -17,7 +17,7 @@ export const skills: Skill[] = [
   { name: "CSS3", level: 5, category: "frontend", color: "#1572b6" },
   { name: "JavaScript", level: 5, category: "language", color: "#f7df1e" },
   { name: "TypeScript", level: 4, category: "language", color: "#3178c6" },
-  { name: "Java", level: 3, category: "language", color: "#f89820" },
+  { name: "Java", level: 3, category: "backend", color: "#f89820" },
   { name: "uni-app", level: 5, category: "mobile", color: "#2b9cf2" },
   { name: "Vite", level: 4, category: "tool", color: "#646cff" },
   { name: "Webpack", level: 3, category: "tool", color: "#1c78c0" },
