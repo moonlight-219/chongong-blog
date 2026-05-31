@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Github, ExternalLink, Building2 } from "lucide-react";
+import { GiteeIcon } from "./icons/Gitee";
 import type { MouseEvent } from "react";
 import type { Project } from "@/data/projects";
 
@@ -9,6 +10,26 @@ type Props = {
   project: Project;
   onClick: () => void;
 };
+
+function isGiteeUrl(url?: string) {
+  return url?.includes("gitee.com") ?? false;
+}
+
+function SourceLink({ url }: { url: string }) {
+  const Icon = isGiteeUrl(url) ? GiteeIcon : Github;
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      className="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 transition-colors"
+      aria-label="源码"
+    >
+      <Icon size={16} />
+    </a>
+  );
+}
 
 export function ProjectCard({ project, onClick }: Props) {
   const mx = useMotionValue(0);
@@ -54,16 +75,7 @@ export function ProjectCard({ project, onClick }: Props) {
           </div>
           <div className="flex gap-1.5 shrink-0">
             {!project.isCompanyProject && project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="p-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 transition-colors"
-                aria-label="源码"
-              >
-                <Github size={16} />
-              </a>
+              <SourceLink url={project.github} />
             )}
             {project.demo && (
               <a
@@ -107,8 +119,6 @@ export function ProjectCard({ project, onClick }: Props) {
               </span>
             )}
           </div>
-        </div>
-
         </div>
       </div>
     </motion.div>

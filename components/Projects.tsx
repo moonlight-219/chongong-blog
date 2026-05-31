@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { X, Github, ExternalLink, Building2 } from "lucide-react";
+import { GiteeIcon } from "./icons/Gitee";
 import { SectionWrapper } from "./SectionWrapper";
 import { ProjectCard } from "./ProjectCard";
 import { FilterTabs, type FilterOption } from "./FilterTabs";
@@ -125,7 +126,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass hover:border-indigo-500/50 text-sm transition-colors"
                 aria-label="源码"
               >
-                <Github size={16} />
+                {project.github.includes("gitee.com") ? <GiteeIcon size={16} /> : <Github size={16} />}
                 源码
               </a>
             )}
