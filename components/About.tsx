@@ -17,6 +17,13 @@ const INFO_ROWS = [
   { label: "期望薪资", value: "6–9K", icon: Banknote, color: "#22c55e" },
 ];
 
+const CORE_SKILLS = [
+  { icon: Code2, label: "Vue 全家桶", desc: "Vue 3 / Pinia / Vue Router" },
+  { icon: Layers, label: "跨端开发", desc: "uni-app / H5 / 小程序" },
+  { icon: Rocket, label: "工程化", desc: "Vite / Webpack / TypeScript" },
+  { icon: Target, label: "可视化", desc: "ECharts / Canvas 2D" },
+];
+
 const HIGHLIGHTS = [
   {
     icon: Smartphone,
@@ -44,19 +51,11 @@ const HIGHLIGHTS = [
   },
 ];
 
-const CORE_SKILLS = [
-  { icon: Code2, label: "Vue 全家桶", desc: "Vue 3 / Pinia / Vue Router" },
-  { icon: Layers, label: "跨端开发", desc: "uni-app / H5 / 小程序" },
-  { icon: Rocket, label: "工程化", desc: "Vite / Webpack / TypeScript" },
-  { icon: Target, label: "可视化", desc: "ECharts / Canvas 2D" },
-];
-
 export function About() {
   return (
     <SectionWrapper id="about" eyebrow="01 / ABOUT" title="关于我">
-      <div className="max-w-6xl mx-auto space-y-16">
-        <HeroSection />
-        <CoreSkills />
+      <div className="max-w-5xl mx-auto space-y-12">
+        <ProfileCard />
         <HighlightsSection />
         <TimelineSection />
       </div>
@@ -64,7 +63,7 @@ export function About() {
   );
 }
 
-function HeroSection() {
+function ProfileCard() {
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
 
@@ -76,142 +75,121 @@ function HeroSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <div className="relative rounded-3xl overflow-hidden">
-          {/* 背景渐变 */}
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-pink-500/5 to-purple-500/10" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+        <div className="relative rounded-3xl overflow-hidden glass">
+          {/* 背景装饰 */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/8 via-transparent to-pink-500/8" />
 
-          <div className="relative p-8 md:p-12">
-            <div className="flex flex-col lg:flex-row gap-10 items-start">
-              {/* 左侧：个人信息卡片 */}
-              <div className="shrink-0 w-full lg:w-80">
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="glass rounded-2xl p-6 space-y-5"
+          <div className="relative p-6 md:p-8 lg:p-10 space-y-8">
+            {/* 头部：名字 + 联系方式 */}
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-6 border-b border-black/5 dark:border-white/5">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight">{profile.name}</h2>
+                <p className="text-sm font-mono opacity-50 mt-1">{profile.nameEn}</p>
+
+                {/* 职位标签 */}
+                <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.1))", border: "1px solid rgba(99,102,241,0.15)" }}>
+                  <Briefcase size={14} className="text-indigo-500" />
+                  {profile.title}
+                </div>
+              </div>
+
+              {/* 联系方式按钮 */}
+              <div className="flex gap-2">
+                <a
+                  href={profile.gitee}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center w-11 h-11 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-[#c71d23]/10 hover:text-[#c71d23] transition-all group"
+                  aria-label="Gitee"
                 >
-                  {/* 头像与名字 */}
-                  <div className="text-center pb-5 border-b border-black/5 dark:border-white/5">
-                    <div
-                      className="w-24 h-24 rounded-2xl mx-auto flex items-center justify-center text-3xl font-bold text-white mb-4 shadow-xl"
-                      style={{
-                        background: "linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #f59e0b 100%)",
-                      }}
-                    >
-                      {profile.name.charAt(0)}
-                    </div>
-                    <h2 className="text-2xl font-bold">{profile.name}</h2>
-                    <p className="text-sm font-mono opacity-50 mt-1">{profile.nameEn}</p>
+                  <GiteeIcon size={18} className="group-hover:scale-110 transition-transform" />
+                </a>
+                <button
+                  onClick={() => setEmailDialogOpen(true)}
+                  className="flex items-center justify-center w-11 h-11 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-pink-500/10 hover:text-pink-500 transition-all group"
+                  aria-label="邮箱"
+                >
+                  <Mail size={18} className="group-hover:scale-110 transition-transform" />
+                </button>
+                <button
+                  onClick={() => setPhoneDialogOpen(true)}
+                  className="flex items-center justify-center w-11 h-11 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-green-500/10 hover:text-green-500 transition-all group"
+                  aria-label="电话"
+                >
+                  <Phone size={18} className="group-hover:scale-110 transition-transform" />
+                </button>
+              </div>
+            </div>
 
-                    {/* 职位标签 */}
-                    <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.1))", border: "1px solid rgba(99,102,241,0.15)" }}>
-                      <Briefcase size={14} className="text-indigo-500" />
-                      {profile.title}
-                    </div>
-                  </div>
+            {/* 自我介绍 */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Sparkles size={16} className="text-indigo-500" />
+                <h3 className="font-semibold text-base">自我介绍</h3>
+              </div>
+              <p className="text-[15px] leading-relaxed opacity-80">{profile.bio}</p>
+            </div>
 
-                  {/* 信息列表 */}
-                  <div className="space-y-3">
-                    {INFO_ROWS.map(({ label, value, icon: Icon, color }) => (
-                      <div key={label} className="flex items-center gap-3 group">
-                        <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
-                          style={{ background: `${color}12`, color }}
-                        >
-                          <Icon size={14} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-[11px] opacity-40 uppercase tracking-wider">{label}</p>
-                          <p className="text-sm font-semibold truncate">{value}</p>
-                        </div>
+            {/* 信息网格：个人信息 + 核心技能 */}
+            <div className="grid md:grid-cols-2 gap-6 pt-2">
+              {/* 左侧：个人信息 */}
+              <div>
+                <h4 className="text-xs font-medium uppercase tracking-wider opacity-40 mb-3">基本信息</h4>
+                <div className="space-y-2.5">
+                  {INFO_ROWS.map(({ label, value, icon: Icon, color }) => (
+                    <div key={label} className="flex items-center gap-3 group">
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all group-hover:scale-105"
+                        style={{ background: `${color}15`, color }}
+                      >
+                        <Icon size={13} />
                       </div>
-                    ))}
-                  </div>
-
-                  {/* 社交链接 */}
-                  <div className="pt-4 border-t border-black/5 dark:border-white/5">
-                    <div className="grid grid-cols-3 gap-2">
-                      <a
-                        href={profile.gitee}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-indigo-500/10 transition-all group"
-                        aria-label="Gitee"
-                      >
-                        <GiteeIcon size={20} className="text-[#c71d23] group-hover:scale-110 transition-transform" />
-                        <span className="text-[11px] opacity-60">Gitee</span>
-                      </a>
-                      <button
-                        onClick={() => setEmailDialogOpen(true)}
-                        className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-pink-500/10 transition-all group"
-                        aria-label="邮箱"
-                      >
-                        <Mail size={20} className="group-hover:scale-110 transition-transform" />
-                        <span className="text-[11px] opacity-60">邮箱</span>
-                      </button>
-                      <button
-                        onClick={() => setPhoneDialogOpen(true)}
-                        className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-green-500/10 transition-all group"
-                        aria-label="电话"
-                      >
-                        <Phone size={20} className="group-hover:scale-110 transition-transform" />
-                        <span className="text-[11px] opacity-60">电话</span>
-                      </button>
+                      <span className="text-xs opacity-50 w-14 shrink-0">{label}</span>
+                      <span className="text-sm font-medium">{value}</span>
                     </div>
-                  </div>
-                </motion.div>
+                  ))}
+                </div>
               </div>
 
-              {/* 右侧：自我介绍 */}
-              <div className="flex-1 min-w-0 space-y-6">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-pink-500/20 flex items-center justify-center">
-                      <Sparkles size={20} className="text-indigo-500" />
+              {/* 右侧：核心技能 */}
+              <div>
+                <h4 className="text-xs font-medium uppercase tracking-wider opacity-40 mb-3">核心能力</h4>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {CORE_SKILLS.map((skill) => (
+                    <div key={skill.label} className="group p-3 rounded-xl bg-gradient-to-br from-indigo-500/5 to-pink-500/5 hover:from-indigo-500/10 hover:to-pink-500/10 transition-all cursor-default">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <skill.icon size={14} className="text-indigo-500" />
+                        <span className="text-xs font-semibold">{skill.label}</span>
+                      </div>
+                      <p className="text-[11px] opacity-55 leading-relaxed">{skill.desc}</p>
                     </div>
-                    <div>
-                      <h3 className="text-xl font-bold">自我介绍</h3>
-                      <p className="text-xs opacity-50 mt-0.5">About Me</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4 text-[15px] leading-relaxed opacity-85">
-                    <p>{profile.bio}</p>
-                  </div>
-
-                  {/* CTA 按钮组 */}
-                  <div className="flex flex-wrap gap-3 mt-8">
-                    <a
-                      href="/resume.pdf"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:shadow-xl hover:-translate-y-0.5 group"
-                      style={{
-                        background: "linear-gradient(135deg, #6366f1, #ec4899)",
-                        color: "white",
-                      }}
-                    >
-                      <Download size={16} className="group-hover:animate-bounce" />
-                      下载简历
-                      <ArrowUpRight size={14} className="opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </a>
-                    <a
-                      href="#projects"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold glass hover:bg-black/5 dark:hover:bg-white/5 transition-all hover:-translate-y-0.5"
-                    >
-                      查看项目
-                      <ArrowUpRight size={14} />
-                    </a>
-                  </div>
-                </motion.div>
+                  ))}
+                </div>
               </div>
+            </div>
+
+            {/* CTA 按钮 */}
+            <div className="flex flex-wrap gap-3 pt-4 border-t border-black/5 dark:border-white/5">
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:shadow-lg hover:-translate-y-0.5 group"
+                style={{
+                  background: "linear-gradient(135deg, #6366f1, #ec4899)",
+                  color: "white",
+                }}
+              >
+                <Download size={15} className="group-hover:animate-bounce" />
+                下载简历
+              </a>
+              <a
+                href="#projects"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all hover:-translate-y-0.5"
+              >
+                查看项目
+                <ArrowUpRight size={14} />
+              </a>
             </div>
           </div>
         </div>
@@ -240,43 +218,6 @@ function HeroSection() {
   );
 }
 
-function CoreSkills() {
-  return (
-    <section>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {CORE_SKILLS.map((skill, i) => (
-            <motion.div
-              key={skill.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="group relative p-5 rounded-2xl glass overflow-hidden cursor-default"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-              <div className="relative">
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500/10 to-pink-500/10 flex items-center justify-center mb-3 text-indigo-500">
-                  <skill.icon size={20} />
-                </div>
-                <h4 className="font-semibold text-sm mb-1">{skill.label}</h4>
-                <p className="text-xs opacity-55 leading-relaxed">{skill.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    </section>
-  );
-}
-
 function HighlightsSection() {
   return (
     <section>
@@ -286,47 +227,42 @@ function HighlightsSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-orange-500/20 flex items-center justify-center">
-            <Award size={20} className="text-pink-500" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold">我能做什么</h3>
-            <p className="text-xs opacity-50 mt-0.5">What I Can Do</p>
-          </div>
+        <div className="flex items-center gap-2 mb-5">
+          <Award size={18} className="text-pink-500" />
+          <h3 className="font-semibold text-base">我能做什么</h3>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {HIGHLIGHTS.map((h, i) => (
             <motion.div
               key={h.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="group relative p-5 rounded-2xl glass overflow-hidden cursor-default"
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative p-4 rounded-2xl glass overflow-hidden cursor-default"
             >
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
-                  background: `radial-gradient(circle at 50% 0%, ${h.color}15, transparent 70%)`,
+                  background: `radial-gradient(circle at 50% 0%, ${h.color}12, transparent 70%)`,
                 }}
               />
 
               <div className="relative">
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-md"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
                   style={{
-                    background: `linear-gradient(135deg, ${h.color}25, ${h.color}10)`,
+                    background: `linear-gradient(135deg, ${h.color}20, ${h.color}8)`,
                     color: h.color,
                   }}
                 >
-                  <h.icon size={20} />
+                  <h.icon size={18} />
                 </div>
 
-                <h4 className="font-semibold mb-2">{h.title}</h4>
-                <p className="text-[13px] opacity-65 leading-relaxed line-clamp-3">{h.desc}</p>
+                <h4 className="font-semibold text-sm mb-1.5">{h.title}</h4>
+                <p className="text-[12.5px] opacity-60 leading-relaxed line-clamp-3">{h.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -348,45 +284,38 @@ function TimelineSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center">
-            <History size={20} className="text-amber-500" />
-          </div>
-          <div>
-            <h3 className="text-lg font-bold">经历</h3>
-            <p className="text-xs opacity-50 mt-0.5">Experience & Education</p>
-          </div>
+        <div className="flex items-center gap-2 mb-5">
+          <History size={18} className="text-amber-500" />
+          <h3 className="font-semibold text-base">经历</h3>
         </div>
 
         <ol
           ref={ref}
-          className="relative pl-6 border-l-2 border-dashed border-black/10 dark:border-white/10 space-y-6"
+          className="relative pl-6 border-l-2 border-dashed border-black/10 dark:border-white/10 space-y-5"
         >
           {profile.timeline.map((item, i) => (
             <motion.li
               key={i}
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              transition={{ duration: 0.5, delay: i * 0.08 }}
               className="relative pl-6"
             >
               <span
-                className="absolute -left-[1.55rem] top-1.5 w-3.5 h-3.5 rounded-full ring-4 ring-[var(--bg)] shadow-md"
+                className="absolute -left-[1.55rem] top-1.5 w-3.5 h-3.5 rounded-full ring-4 ring-[var(--bg)] shadow-sm"
                 style={{
                   background: "linear-gradient(135deg, #6366f1, #ec4899)",
                 }}
               />
 
-              <div className="p-5 rounded-xl glass hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors group">
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-base group-hover:text-indigo-500 transition-colors">{item.title}</h4>
-                  </div>
-                  <span className="shrink-0 text-xs font-mono px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+              <div className="p-4 rounded-xl glass hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors group">
+                <div className="flex items-start justify-between gap-3 mb-1.5">
+                  <h4 className="font-semibold text-sm group-hover:text-indigo-500 transition-colors flex-1">{item.title}</h4>
+                  <span className="shrink-0 text-[11px] font-mono px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
                     {item.year}
                   </span>
                 </div>
-                <p className="opacity-70 leading-relaxed text-sm">{item.desc}</p>
+                <p className="opacity-65 leading-relaxed text-[13px]">{item.desc}</p>
               </div>
             </motion.li>
           ))}
