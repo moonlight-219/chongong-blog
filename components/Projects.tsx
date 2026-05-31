@@ -103,25 +103,15 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         </button>
 
         <div
-          className="relative px-7 pt-10 pb-6"
+          className="relative px-7 pt-8 pb-5"
           style={{
-            background: `linear-gradient(135deg, ${project.gradient[0]}12, ${project.gradient[1]}12)`,
+            background: `linear-gradient(135deg, ${project.gradient[0]}10, ${project.gradient[1]}10)`,
           }}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_55%)]" />
-          <div className="relative flex items-center gap-4">
-            <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black text-white shadow-lg"
-              style={{
-                background: `linear-gradient(135deg, ${project.gradient[0]}, ${project.gradient[1]})`,
-              }}
-            >
-              {project.name.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold">{project.name}</h3>
-              <p className="opacity-70 mt-0.5">{project.tagline}</p>
-            </div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_55%)]" />
+          <div className="relative">
+            <h3 className="text-2xl font-bold">{project.name}</h3>
+            <p className="opacity-70 mt-1">{project.tagline}</p>
           </div>
         </div>
 
