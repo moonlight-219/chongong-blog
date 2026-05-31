@@ -72,7 +72,7 @@ export function ProjectCard({ project, onClick }: Props) {
             <p className="text-sm opacity-70 mt-0.5">{project.tagline}</p>
           </div>
           <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            {project.github && (
+            {!project.isCompanyProject && project.github && (
               <a
                 href={project.github}
                 target="_blank"

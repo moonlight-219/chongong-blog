@@ -121,7 +121,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               <p className="opacity-70 mt-1">{project.tagline}</p>
             </div>
             <div className="flex gap-2">
-              {project.github && (
+              {!project.isCompanyProject && project.github && (
                 <a
                   href={project.github}
                   target="_blank"
@@ -142,6 +142,11 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 >
                   <ExternalLink size={18} />
                 </a>
+              )}
+              {project.isCompanyProject && (
+                <span className="px-3 py-2 rounded-lg text-xs font-mono bg-black/5 dark:bg-white/10 opacity-60">
+                  公司项目 · 源码不公开
+                </span>
               )}
             </div>
           </div>
