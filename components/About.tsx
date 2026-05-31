@@ -130,38 +130,39 @@ function ProfileCard() {
               <p className="text-[15px] leading-relaxed opacity-80">{profile.bio}</p>
             </div>
 
-            {/* 信息网格：个人信息 + 核心技能 */}
-            <div className="grid md:grid-cols-2 gap-6 pt-2">
-              {/* 左侧：个人信息 */}
+            {/* 信息与技能区域 */}
+            <div className="space-y-6 pt-2">
+              {/* 基本信息标签 */}
               <div>
                 <h4 className="text-xs font-medium uppercase tracking-wider opacity-40 mb-3">基本信息</h4>
-                <div className="space-y-2.5">
+                <div className="flex flex-wrap gap-2">
                   {INFO_ROWS.map(({ label, value, icon: Icon, color }) => (
-                    <div key={label} className="flex items-center gap-3 group">
-                      <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all group-hover:scale-105"
-                        style={{ background: `${color}15`, color }}
-                      >
-                        <Icon size={13} />
-                      </div>
-                      <span className="text-xs opacity-50 w-14 shrink-0">{label}</span>
-                      <span className="text-sm font-medium">{value}</span>
+                    <div
+                      key={label}
+                      className="group inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/[0.06] dark:hover:bg-white/[0.06] transition-all"
+                    >
+                      <Icon size={13} style={{ color }} />
+                      <span className="text-xs font-medium">{value}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* 右侧：核心技能 */}
+              {/* 核心技能 */}
               <div>
                 <h4 className="text-xs font-medium uppercase tracking-wider opacity-40 mb-3">核心能力</h4>
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {CORE_SKILLS.map((skill) => (
-                    <div key={skill.label} className="group p-3 rounded-xl bg-gradient-to-br from-indigo-500/5 to-pink-500/5 hover:from-indigo-500/10 hover:to-pink-500/10 transition-all cursor-default">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <skill.icon size={14} className="text-indigo-500" />
-                        <span className="text-xs font-semibold">{skill.label}</span>
+                    <div key={skill.label} className="group relative p-4 rounded-xl bg-gradient-to-br from-indigo-500/5 to-pink-500/5 hover:from-indigo-500/10 hover:to-pink-500/10 transition-all cursor-default overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 to-pink-500/0 group-hover:from-indigo-500/5 group-hover:to-pink-500/5 transition-all" />
+
+                      <div className="relative">
+                        <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-2.5 bg-gradient-to-br from-indigo-500/15 to-pink-500/15">
+                          <skill.icon size={16} className="text-indigo-500" />
+                        </div>
+                        <h5 className="text-sm font-semibold mb-1">{skill.label}</h5>
+                        <p className="text-[11px] opacity-50 leading-relaxed">{skill.desc}</p>
                       </div>
-                      <p className="text-[11px] opacity-55 leading-relaxed">{skill.desc}</p>
                     </div>
                   ))}
                 </div>
