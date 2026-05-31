@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Phone, Sparkles, Award, History, Smartphone, BarChart3, Zap, Bot, Calendar, GraduationCap, Building2, Briefcase, MapPin, Banknote, ArrowUpRight, Download } from "lucide-react";
+import { Mail, Phone, Sparkles, Award, History, Smartphone, BarChart3, Zap, Bot, Calendar, GraduationCap, Building2, Briefcase, MapPin, Banknote, ArrowUpRight, Download, Code2, Layers, Rocket, Target } from "lucide-react";
 import { SectionWrapper } from "./SectionWrapper";
 import { GiteeIcon } from "@/components/icons/Gitee";
 import { profile } from "@/data/profile";
@@ -44,11 +44,19 @@ const HIGHLIGHTS = [
   },
 ];
 
+const CORE_SKILLS = [
+  { icon: Code2, label: "Vue 全家桶", desc: "Vue 3 / Pinia / Vue Router" },
+  { icon: Layers, label: "跨端开发", desc: "uni-app / H5 / 小程序" },
+  { icon: Rocket, label: "工程化", desc: "Vite / Webpack / TypeScript" },
+  { icon: Target, label: "可视化", desc: "ECharts / Canvas 2D" },
+];
+
 export function About() {
   return (
     <SectionWrapper id="about" eyebrow="01 / ABOUT" title="关于我">
-      <div className="max-w-5xl mx-auto">
-        <IntroSection />
+      <div className="max-w-6xl mx-auto space-y-16">
+        <HeroSection />
+        <CoreSkills />
         <HighlightsSection />
         <TimelineSection />
       </div>
@@ -56,118 +64,154 @@ export function About() {
   );
 }
 
-function IntroSection() {
+function HeroSection() {
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
 
   return (
-    <div className="mb-16">
+    <div>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="relative rounded-3xl overflow-hidden"
+        transition={{ duration: 0.6 }}
       >
-        <div className="p-8 md:p-10 glass">
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* 左侧：头像与基本信息 */}
-            <div className="shrink-0 w-full md:w-64 space-y-5">
-              {/* 头像区域 */}
-              <div className="flex items-center gap-4">
-                <div
-                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-lg"
-                  style={{
-                    background: "linear-gradient(135deg, #6366f1, #ec4899)",
-                  }}
+        <div className="relative rounded-3xl overflow-hidden">
+          {/* 背景渐变 */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-pink-500/5 to-purple-500/10" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-400/20 to-pink-400/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
+
+          <div className="relative p-8 md:p-12">
+            <div className="flex flex-col lg:flex-row gap-10 items-start">
+              {/* 左侧：个人信息卡片 */}
+              <div className="shrink-0 w-full lg:w-80">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="glass rounded-2xl p-6 space-y-5"
                 >
-                  {profile.name.charAt(0)}
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold">{profile.name}</h2>
-                  <p className="text-sm font-mono opacity-60">{profile.nameEn}</p>
-                </div>
-              </div>
+                  {/* 头像与名字 */}
+                  <div className="text-center pb-5 border-b border-black/5 dark:border-white/5">
+                    <div
+                      className="w-24 h-24 rounded-2xl mx-auto flex items-center justify-center text-3xl font-bold text-white mb-4 shadow-xl"
+                      style={{
+                        background: "linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #f59e0b 100%)",
+                      }}
+                    >
+                      {profile.name.charAt(0)}
+                    </div>
+                    <h2 className="text-2xl font-bold">{profile.name}</h2>
+                    <p className="text-sm font-mono opacity-50 mt-1">{profile.nameEn}</p>
 
-              {/* 职位标签 */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={{ background: "linear-gradient(135deg, #6366f115, #ec489915)", border: "1px solid #6366f120" }}>
-                <Briefcase size={14} className="text-indigo-500" />
-                {profile.title}
-              </div>
-
-              {/* 信息列表 */}
-              <div className="space-y-2.5">
-                {INFO_ROWS.slice(0, 4).map(({ label, value, icon: Icon, color }) => (
-                  <div key={label} className="flex items-center gap-3 text-sm">
-                    <Icon size={14} style={{ color }} className="shrink-0" />
-                    <span className="opacity-50 w-16 shrink-0">{label}</span>
-                    <span className="font-medium">{value}</span>
+                    {/* 职位标签 */}
+                    <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.1))", border: "1px solid rgba(99,102,241,0.15)" }}>
+                      <Briefcase size={14} className="text-indigo-500" />
+                      {profile.title}
+                    </div>
                   </div>
-                ))}
-              </div>
 
-              {/* 联系方式 */}
-              <div className="flex gap-2 pt-2">
-                <a
-                  href={profile.gitee}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors group"
-                  aria-label="Gitee"
-                >
-                  <GiteeIcon size={18} className="text-[#c71d23] group-hover:scale-110 transition-transform" />
-                </a>
-                <button
-                  onClick={() => setEmailDialogOpen(true)}
-                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors group"
-                  aria-label="邮箱"
-                >
-                  <Mail size={18} className="group-hover:scale-110 transition-transform" />
-                </button>
-                <button
-                  onClick={() => setPhoneDialogOpen(true)}
-                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors group"
-                  aria-label="电话"
-                >
-                  <Phone size={18} className="group-hover:scale-110 transition-transform" />
-                </button>
-              </div>
-
-              {/* 额外信息 */}
-              <div className="pt-3 border-t border-black/5 dark:border-white/5 space-y-2">
-                {INFO_ROWS.slice(4).map(({ label, value, icon: Icon, color }) => (
-                  <div key={label} className="flex items-center gap-3 text-sm">
-                    <Icon size={14} style={{ color }} className="shrink-0" />
-                    <span className="opacity-50 w-16 shrink-0">{label}</span>
-                    <span className="font-medium">{value}</span>
+                  {/* 信息列表 */}
+                  <div className="space-y-3">
+                    {INFO_ROWS.map(({ label, value, icon: Icon, color }) => (
+                      <div key={label} className="flex items-center gap-3 group">
+                        <div
+                          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
+                          style={{ background: `${color}12`, color }}
+                        >
+                          <Icon size={14} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[11px] opacity-40 uppercase tracking-wider">{label}</p>
+                          <p className="text-sm font-semibold truncate">{value}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* 右侧：自我介绍 */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-4">
-                <Sparkles size={18} className="text-indigo-500" />
-                <h3 className="font-semibold">自我介绍</h3>
+                  {/* 社交链接 */}
+                  <div className="pt-4 border-t border-black/5 dark:border-white/5">
+                    <div className="grid grid-cols-3 gap-2">
+                      <a
+                        href={profile.gitee}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-indigo-500/10 transition-all group"
+                        aria-label="Gitee"
+                      >
+                        <GiteeIcon size={20} className="text-[#c71d23] group-hover:scale-110 transition-transform" />
+                        <span className="text-[11px] opacity-60">Gitee</span>
+                      </a>
+                      <button
+                        onClick={() => setEmailDialogOpen(true)}
+                        className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-pink-500/10 transition-all group"
+                        aria-label="邮箱"
+                      >
+                        <Mail size={20} className="group-hover:scale-110 transition-transform" />
+                        <span className="text-[11px] opacity-60">邮箱</span>
+                      </button>
+                      <button
+                        onClick={() => setPhoneDialogOpen(true)}
+                        className="flex flex-col items-center gap-1.5 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-green-500/10 transition-all group"
+                        aria-label="电话"
+                      >
+                        <Phone size={20} className="group-hover:scale-110 transition-transform" />
+                        <span className="text-[11px] opacity-60">电话</span>
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-              <p className="leading-relaxed opacity-80 text-[15px]">{profile.bio}</p>
 
-              {/* 简历下载按钮 */}
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:shadow-lg group"
-                style={{
-                  background: "linear-gradient(135deg, #6366f1, #ec4899)",
-                  color: "white",
-                }}
-              >
-                <Download size={16} className="group-hover:animate-bounce" />
-                下载简历
-                <ArrowUpRight size={14} className="opacity-60 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+              {/* 右侧：自我介绍 */}
+              <div className="flex-1 min-w-0 space-y-6">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/20 to-pink-500/20 flex items-center justify-center">
+                      <Sparkles size={20} className="text-indigo-500" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">自我介绍</h3>
+                      <p className="text-xs opacity-50 mt-0.5">About Me</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 text-[15px] leading-relaxed opacity-85">
+                    <p>{profile.bio}</p>
+                  </div>
+
+                  {/* CTA 按钮组 */}
+                  <div className="flex flex-wrap gap-3 mt-8">
+                    <a
+                      href="/resume.pdf"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all hover:shadow-xl hover:-translate-y-0.5 group"
+                      style={{
+                        background: "linear-gradient(135deg, #6366f1, #ec4899)",
+                        color: "white",
+                      }}
+                    >
+                      <Download size={16} className="group-hover:animate-bounce" />
+                      下载简历
+                      <ArrowUpRight size={14} className="opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </a>
+                    <a
+                      href="#projects"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold glass hover:bg-black/5 dark:hover:bg-white/5 transition-all hover:-translate-y-0.5"
+                    >
+                      查看项目
+                      <ArrowUpRight size={14} />
+                    </a>
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -196,18 +240,60 @@ function IntroSection() {
   );
 }
 
-function HighlightsSection() {
+function CoreSkills() {
   return (
-    <section className="mb-16">
+    <section>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center gap-2 mb-6">
-          <Award size={18} className="text-pink-500" />
-          <h3 className="font-semibold text-lg">我能做什么</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {CORE_SKILLS.map((skill, i) => (
+            <motion.div
+              key={skill.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="group relative p-5 rounded-2xl glass overflow-hidden cursor-default"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+              <div className="relative">
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500/10 to-pink-500/10 flex items-center justify-center mb-3 text-indigo-500">
+                  <skill.icon size={20} />
+                </div>
+                <h4 className="font-semibold text-sm mb-1">{skill.label}</h4>
+                <p className="text-xs opacity-55 leading-relaxed">{skill.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+function HighlightsSection() {
+  return (
+    <section>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500/20 to-orange-500/20 flex items-center justify-center">
+            <Award size={20} className="text-pink-500" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">我能做什么</h3>
+            <p className="text-xs opacity-50 mt-0.5">What I Can Do</p>
+          </div>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -232,7 +318,7 @@ function HighlightsSection() {
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 shadow-md"
                   style={{
-                    background: `linear-gradient(135deg, ${h.color}20, ${h.color}10)`,
+                    background: `linear-gradient(135deg, ${h.color}25, ${h.color}10)`,
                     color: h.color,
                   }}
                 >
@@ -262,9 +348,14 @@ function TimelineSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex items-center gap-2 mb-6">
-          <History size={18} className="text-amber-500" />
-          <h3 className="font-semibold text-lg">经历</h3>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center">
+            <History size={20} className="text-amber-500" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">经历</h3>
+            <p className="text-xs opacity-50 mt-0.5">Experience & Education</p>
+          </div>
         </div>
 
         <ol
@@ -276,24 +367,26 @@ function TimelineSection() {
               key={i}
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.12 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
               className="relative pl-6"
             >
               <span
-                className="absolute -left-[1.55rem] top-1.5 w-3.5 h-3.5 rounded-full ring-4 ring-[var(--bg)]"
+                className="absolute -left-[1.55rem] top-1.5 w-3.5 h-3.5 rounded-full ring-4 ring-[var(--bg)] shadow-md"
                 style={{
                   background: "linear-gradient(135deg, #6366f1, #ec4899)",
                 }}
               />
 
-              <div className="p-4 rounded-xl hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors">
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-500">
+              <div className="p-5 rounded-xl glass hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors group">
+                <div className="flex items-start justify-between gap-4 mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-base group-hover:text-indigo-500 transition-colors">{item.title}</h4>
+                  </div>
+                  <span className="shrink-0 text-xs font-mono px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
                     {item.year}
                   </span>
                 </div>
-                <h4 className="font-semibold text-base">{item.title}</h4>
-                <p className="mt-1.5 opacity-70 leading-relaxed text-sm">{item.desc}</p>
+                <p className="opacity-70 leading-relaxed text-sm">{item.desc}</p>
               </div>
             </motion.li>
           ))}
