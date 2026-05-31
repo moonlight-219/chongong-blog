@@ -56,9 +56,9 @@ export function Hero() {
         >
           <span className="relative flex w-2 h-2">
             <span className="absolute inline-flex w-full h-full rounded-full bg-green-400 opacity-75 animate-ping" />
-            <span className="relative inline-flex w-2 h-2 rounded-full bg-green-500" />
+            <span className="relative inline-flex w-full h-full rounded-full bg-green-500" />
           </span>
-          目前在做一些有意思的东西
+          开放工作机会 · 寻找前端/全栈职位
         </motion.div>
 
         <motion.h1
