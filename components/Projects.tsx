@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { X, Github, ExternalLink } from "lucide-react";
+import { X, Github, ExternalLink, Building2 } from "lucide-react";
 import { SectionWrapper } from "./SectionWrapper";
 import { ProjectCard } from "./ProjectCard";
 import { FilterTabs, type FilterOption } from "./FilterTabs";
@@ -103,52 +103,60 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         </button>
 
         <div
-          className="relative h-56 flex items-center justify-center"
+          className="relative px-7 pt-10 pb-6"
           style={{
-            background: `linear-gradient(135deg, ${project.gradient[0]}, ${project.gradient[1]})`,
+            background: `linear-gradient(135deg, ${project.gradient[0]}12, ${project.gradient[1]}12)`,
           }}
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.25),transparent_55%)]" />
-          <span className="relative text-8xl font-black text-white/90 drop-shadow-lg">
-            {project.name.charAt(0).toUpperCase()}
-          </span>
-        </div>
-
-        <div className="p-7">
-          <div className="flex items-start justify-between gap-4">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15),transparent_55%)]" />
+          <div className="relative flex items-center gap-4">
+            <div
+              className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black text-white shadow-lg"
+              style={{
+                background: `linear-gradient(135deg, ${project.gradient[0]}, ${project.gradient[1]})`,
+              }}
+            >
+              {project.name.charAt(0).toUpperCase()}
+            </div>
             <div>
               <h3 className="text-2xl font-bold">{project.name}</h3>
-              <p className="opacity-70 mt-1">{project.tagline}</p>
+              <p className="opacity-70 mt-0.5">{project.tagline}</p>
             </div>
-            <div className="flex gap-2">
-              {!project.isCompanyProject && project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2 rounded-lg glass hover:border-indigo-500/50"
-                  aria-label="GitHub"
-                >
-                  <Github size={18} />
-                </a>
-              )}
-              {project.demo && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-2 rounded-lg glass hover:border-indigo-500/50"
-                  aria-label="Demo"
-                >
-                  <ExternalLink size={18} />
-                </a>
-              )}
-              {project.isCompanyProject && (
-                <span className="px-3 py-2 rounded-lg text-xs font-mono bg-black/5 dark:bg-white/10 opacity-60">
-                  公司项目 · 源码不公开
-                </span>
-              )}
-            </div>
+          </div>
+        </div>
+
+        <div className="px-7 pb-7">
+          <div className="flex items-center gap-2 mt-2 mb-5">
+            {!project.isCompanyProject && project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass hover:border-indigo-500/50 text-sm transition-colors"
+                aria-label="源码"
+              >
+                <Github size={16} />
+                源码
+              </a>
+            )}
+            {project.demo && (
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass hover:border-indigo-500/50 text-sm transition-colors"
+                aria-label="在线预览"
+              >
+                <ExternalLink size={16} />
+                在线预览
+              </a>
+            )}
+            {project.isCompanyProject && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-black/5 dark:bg-white/10 opacity-60">
+                <Building2 size={14} />
+                公司项目 · 源码不公开
+              </span>
+            )}
           </div>
 
           <p className="mt-5 leading-relaxed opacity-80">{project.description}</p>

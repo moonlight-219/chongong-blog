@@ -11,7 +11,7 @@ export type Project = {
   github?: string;
   demo?: string;
   featured?: boolean;
-  isCompanyProject?: boolean; // 标记为公司项目，不显示源码链接
+  isCompanyProject?: boolean;
 };
 
 export const projects: Project[] = [
@@ -25,7 +25,7 @@ export const projects: Project[] = [
     tags: ["前端"],
     gradient: ["#6366f1", "#ec4899"],
     featured: true,
-    isCompanyProject: true, // 公司项目，不显示源码和在线地址
+    isCompanyProject: true,
   },
   {
     slug: "wallpaper-share",
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     stack: ["Vue 3", "uni-app", "Spring Boot", "MySQL", "阿里云 OSS"],
     tags: ["全栈", "小程序"],
     gradient: ["#06b6d4", "#3b82f6"],
-    github: "https://github.com/summer-219/wallpaper-share",
+    github: "https://gitee.com/summer-219/wallpaper",
     demo: "https://www.linchunxia.top/",
     featured: true,
   },
@@ -50,7 +50,7 @@ export const projects: Project[] = [
     tags: ["前端", "AI"],
     gradient: ["#7c3aed", "#06b6d4"],
     featured: true,
-    github: "https://github.com/summer-219/ai-practice",
+    isCompanyProject: true,
   },
   {
     slug: "wechat-ai-assistant",
@@ -62,7 +62,7 @@ export const projects: Project[] = [
     tags: ["全栈", "AI"],
     gradient: ["#10b981", "#059669"],
     featured: true,
-    github: "https://github.com/summer-219/wechat-ai-assistant",
+    github: "https://gitee.com/summer-219/gzh-chat",
   },
   {
     slug: "finance-game",
@@ -73,7 +73,7 @@ export const projects: Project[] = [
     stack: ["Vue 3", "Pinia", "Element Plus", "ECharts", "Canvas 2D"],
     tags: ["前端", "游戏"],
     gradient: ["#f59e0b", "#ef4444"],
-    github: "https://github.com/summer-219/finance-game",
+    isCompanyProject: true,
   },
   {
     slug: "finance-quiz",
@@ -84,7 +84,7 @@ export const projects: Project[] = [
     stack: ["uni-app", "Vue 3", "ECharts"],
     tags: ["小程序", "前端"],
     gradient: ["#0ea5e9", "#6366f1"],
-    github: "https://github.com/summer-219/finance-quiz",
+    isCompanyProject: true,
   },
 ];
 
