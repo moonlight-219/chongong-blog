@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { Mail, Phone, Sparkles, Award, History, Smartphone, BarChart3, Zap, Bot, Calendar, GraduationCap, Building2, Briefcase, MapPin, Banknote, ArrowUpRight, Download, Code2, Layers, Rocket, Target } from "lucide-react";
+import { Mail, Phone, Sparkles, Award, History, Smartphone, BarChart3, Zap, Bot, Calendar, GraduationCap, Building2, Briefcase, MapPin, Banknote, ArrowUpRight, Code2, Layers, Rocket, Target } from "lucide-react";
 import { SectionWrapper } from "./SectionWrapper";
 import { GiteeIcon } from "@/components/icons/Gitee";
 import { profile } from "@/data/profile";
@@ -171,19 +171,6 @@ function ProfileCard() {
 
             {/* CTA 按钮 */}
             <div className="flex flex-wrap gap-3 pt-4 border-t border-black/5 dark:border-white/5">
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:shadow-lg hover:-translate-y-0.5 group"
-                style={{
-                  background: "linear-gradient(135deg, #6366f1, #ec4899)",
-                  color: "white",
-                }}
-              >
-                <Download size={15} className="group-hover:animate-bounce" />
-                下载简历
-              </a>
               <a
                 href="#projects"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all hover:-translate-y-0.5"
