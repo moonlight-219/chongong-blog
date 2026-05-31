@@ -9,44 +9,70 @@ import { ProjectCard } from "./ProjectCard";
 import { FilterTabs, type FilterOption } from "./FilterTabs";
 import { projects, allTags, type Project, type ProjectTag } from "@/data/projects";
 
-type ProjectFilter = ProjectTag | "all";
+type ProjectFilter = ProjectTag | "all" | "demo" | "source" | "company";
 
 export function Projects() {
   const [filter, setFilter] = useState<ProjectFilter>("all");
   const [active, setActive] = useState<Project | null>(null);
 
-  const filtered =
-    filter === "all"
-      ? projects
-      : projects.filter((p) => p.tags.includes(filter));
+  const filtered = useMemo(() => {
+    switch (filter) {
+      case "demo":
+        return projects.filter((p) => p.demo);
+      case "source":
+        return projects.filter((p) => p.github && !p.isCompanyProject);
+      case "company":
+        return projects.filter((p) => p.isCompanyProject);
+      default:
+        return filter === "all"
+          ? projects
+          : projects.filter((p) => p.tags.includes(filter as ProjectTag));
+    }
+  }, [filter]);
 
-  const options = useMemo<FilterOption<ProjectFilter>[]>(
-    () => [
-      { key: "all", label: "全部", count: projects.length },
-      ...allTags
+  const typeOptions: FilterOption<ProjectFilter>[] = [
+    { key: "all", label: "全部", count: projects.length },
+    { key: "demo", label: "可在线预览", count: projects.filter((p) => p.demo).length },
+    { key: "source", label: "有源码", count: projects.filter((p) => p.github && !p.isCompanyProject).length },
+    { key: "company", label: "公司项目", count: projects.filter((p) => p.isCompanyProject).length },
+  ];
+
+  const tagOptions = useMemo<FilterOption<ProjectFilter>[]>(
+    () =>
+      allTags
         .map((tag) => ({
           key: tag,
           label: tag,
           count: projects.filter((p) => p.tags.includes(tag)).length,
         }))
         .filter((o) => o.count > 0),
-    ],
     []
   );
+
+  const options = [...typeOptions, ...tagOptions];
 
   return (
     <SectionWrapper id="projects" eyebrow="03 / WORKS" title="项目作品">
       <p className="opacity-70 -mt-6 mb-8 max-w-2xl">
-        这里收录了我做过的一些项目，有大有小，有线上跑着的也有快乐车库实验。点击卡片查看详情。
+        这里收录了我做过的一些项目，有大有小，点击卡片查看详情。
       </p>
 
-      <FilterTabs
-        layoutGroupId="projects"
-        options={options}
-        value={filter}
-        onChange={setFilter}
-        prefix="标签"
-      />
+      <div className="space-y-4 mb-10">
+        <FilterTabs
+          layoutGroupId="projects-type"
+          options={typeOptions}
+          value={filter}
+          onChange={setFilter}
+          prefix="类型"
+        />
+        <FilterTabs
+          layoutGroupId="projects-tag"
+          options={tagOptions}
+          value={filter}
+          onChange={setFilter}
+          prefix="标签"
+        />
+      </div>
 
       {/* 卡片网格 */}
       <motion.div
