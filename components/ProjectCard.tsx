@@ -109,17 +109,7 @@ export function ProjectCard({ project, onClick }: Props) {
           </div>
         </div>
 
-        {project.featured && (
-          <div
-            className="absolute top-3 right-3 px-2 py-1 rounded-full text-[10px] font-mono tracking-wider backdrop-blur-sm"
-            style={{
-              backgroundColor: `${project.gradient[0]}30`,
-              color: project.gradient[0],
-            }}
-          >
-            FEATURED
-          </div>
-        )}
+        </div>
       </div>
     </motion.div>
   );
