@@ -28,16 +28,6 @@ export function Skills() {
     []
   );
 
-  const levelText = (level: number) => {
-    switch (level) {
-      case 5: return "精通";
-      case 4: return "熟练";
-      case 3: return "掌握";
-      case 2: return "了解";
-      default: return "入门";
-    }
-  };
-
   return (
     <SectionWrapper id="skills" eyebrow="02 / SKILLS" title="我的技能栈">
       <p className="opacity-70 -mt-6 mb-6 max-w-2xl text-sm">
@@ -73,9 +63,6 @@ export function Skills() {
               style={{ backgroundColor: skill.color }}
             />
             <span className="text-sm font-medium">{skill.name}</span>
-            <span className="text-[11px] opacity-40 font-mono">
-              {levelText(skill.level)}
-            </span>
           </motion.div>
         ))}
       </div>
