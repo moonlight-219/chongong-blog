@@ -36,7 +36,7 @@ export function Projects() {
   return (
     <SectionWrapper id="projects" eyebrow="03 / WORKS" title="项目作品">
       <p className="opacity-70 -mt-6 mb-8 max-w-2xl">
-        这里收录了我做过的一些项目,有大有小,有线上跑着的也有快乐车库实验。点击卡片查看详情。
+        这里收录了我做过的一些项目，有大有小，有线上跑着的也有快乐车库实验。点击卡片查看详情。
       </p>
 
       <FilterTabs
