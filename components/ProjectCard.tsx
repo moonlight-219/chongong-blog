@@ -31,7 +31,26 @@ function SourceLink({ url }: { url: string }) {
   );
 }
 
+function getResponsiveDemoLink(project: Project) {
+  const fallback = project.demo ?? project.demoDesktop ?? project.demoMobile;
+
+  if (typeof window === "undefined") {
+    return fallback;
+  }
+
+  const isMobile =
+    window.matchMedia?.("(max-width: 768px)").matches ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent);
+
+  if (isMobile) {
+    return project.demoMobile ?? fallback;
+  }
+
+  return project.demoDesktop ?? fallback;
+}
+
 export function ProjectCard({ project, onClick }: Props) {
+  const demoLink = getResponsiveDemoLink(project);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const rx = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 18 });
@@ -77,9 +96,9 @@ export function ProjectCard({ project, onClick }: Props) {
             {!project.isCompanyProject && project.github && (
               <SourceLink url={project.github} />
             )}
-            {project.demo && (
+            {demoLink && (
               <a
-                href={project.demo}
+                href={demoLink as string}
                 target="_blank"
                 rel="noreferrer"
                 onClick={(e) => e.stopPropagation()}

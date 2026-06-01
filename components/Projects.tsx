@@ -15,10 +15,12 @@ export function Projects() {
   const [filter, setFilter] = useState<ProjectFilter>("all");
   const [active, setActive] = useState<Project | null>(null);
 
+  const hasDemo = (project: Project) => Boolean(project.demo ?? project.demoDesktop ?? project.demoMobile);
+
   const filtered = useMemo(() => {
     switch (filter) {
       case "demo":
-        return projects.filter((p) => p.demo);
+        return projects.filter((p) => hasDemo(p));
       case "source":
         return projects.filter((p) => p.github && !p.isCompanyProject);
       case "company":
@@ -32,7 +34,7 @@ export function Projects() {
 
   const typeOptions: FilterOption<ProjectFilter>[] = [
     { key: "all", label: "全部", count: projects.length },
-    { key: "demo", label: "可在线预览", count: projects.filter((p) => p.demo).length },
+    { key: "demo", label: "可在线预览", count: projects.filter((p) => hasDemo(p)).length },
     { key: "source", label: "有源码", count: projects.filter((p) => p.github && !p.isCompanyProject).length },
     { key: "company", label: "公司项目", count: projects.filter((p) => p.isCompanyProject).length },
   ];
@@ -104,7 +106,27 @@ export function Projects() {
   );
 }
 
+function getResponsiveDemoLink(project: Project) {
+  const fallback = project.demo ?? project.demoDesktop ?? project.demoMobile;
+
+  if (typeof window === "undefined") {
+    return fallback;
+  }
+
+  const isMobile =
+    window.matchMedia?.("(max-width: 768px)").matches ||
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(window.navigator.userAgent);
+
+  if (isMobile) {
+    return project.demoMobile ?? fallback;
+  }
+
+  return project.demoDesktop ?? fallback;
+}
+
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const demoLink = getResponsiveDemoLink(project);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -156,9 +178,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 源码
               </a>
             )}
-            {project.demo && (
+            {demoLink && (
               <a
-                href={project.demo}
+                href={demoLink}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass hover:border-indigo-500/50 text-sm transition-colors"

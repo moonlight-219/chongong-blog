@@ -10,6 +10,8 @@ export type Project = {
   gradient: [string, string];
   github?: string;
   demo?: string;
+  demoDesktop?: string;
+  demoMobile?: string;
   featured?: boolean;
   isCompanyProject?: boolean;
 };
@@ -38,6 +40,8 @@ export const projects: Project[] = [
     gradient: ["#06b6d4", "#3b82f6"],
     github: "https://gitee.com/summer-219/wallpaper",
     demo: "https://www.linchunxia.top/",
+    demoDesktop: "https://www.linchunxia.top/",
+    demoMobile: "http://101.200.120.68/",
     featured: true,
   },
   {
