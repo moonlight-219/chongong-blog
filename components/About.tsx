@@ -79,11 +79,11 @@ function ProfileCard() {
           {/* 背景装饰 */}
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/8 via-transparent to-pink-500/8" />
 
-          <div className="relative p-6 md:p-8 lg:p-10 space-y-8">
+          <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 space-y-6 sm:space-y-8">
             {/* 头部：名字 + 联系方式 */}
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 pb-6 border-b border-black/5 dark:border-white/5">
               <div>
-                <h2 className="text-3xl font-bold tracking-tight">{profile.name}</h2>
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">{profile.name}</h2>
                 <p className="text-sm font-mono opacity-50 mt-1">{profile.nameEn}</p>
 
                 {/* 职位标签 */}
@@ -151,7 +151,7 @@ function ProfileCard() {
               {/* 核心技能 */}
               <div>
                 <h4 className="text-xs font-medium uppercase tracking-wider opacity-40 mb-3">核心能力</h4>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   {CORE_SKILLS.map((skill) => (
                     <div key={skill.label} className="group relative p-4 rounded-xl bg-gradient-to-br from-indigo-500/5 to-pink-500/5 hover:from-indigo-500/10 hover:to-pink-500/10 transition-all cursor-default overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 to-pink-500/0 group-hover:from-indigo-500/5 group-hover:to-pink-500/5 transition-all" />
@@ -220,7 +220,7 @@ function HighlightsSection() {
           <h3 className="font-semibold text-base">我能做什么</h3>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {HIGHLIGHTS.map((h, i) => (
             <motion.div
               key={h.title}
