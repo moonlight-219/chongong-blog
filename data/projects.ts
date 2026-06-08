@@ -1,4 +1,4 @@
-export type ProjectTag = "全栈" | "前端" | "后端" | "小程序" | "AI" | "游戏" | "后台";
+export type ProjectTag = "全栈" | "前端" | "后端" | "小程序" | "AI" | "游戏" | "后台" | "工具";
 
 export type Project = {
   slug: string;
@@ -14,6 +14,7 @@ export type Project = {
   demoMobile?: string;
   featured?: boolean;
   isCompanyProject?: boolean;
+  images?: string[];
 };
 
 export const projects: Project[] = [
@@ -43,6 +44,11 @@ export const projects: Project[] = [
     demoDesktop: "https://www.linchunxia.top/",
     demoMobile: "http://101.200.120.68/",
     featured: true,
+    images: [
+      "/images/projects/wallpaper/home.jpg",
+      "/images/projects/wallpaper/creator.jpg",
+      "/images/projects/wallpaper/upload.jpg",
+    ],
   },
   {
     slug: "ai-practice",
@@ -55,18 +61,6 @@ export const projects: Project[] = [
     gradient: ["#7c3aed", "#06b6d4"],
     featured: true,
     isCompanyProject: true,
-  },
-  {
-    slug: "wechat-ai-assistant",
-    name: "公众号助手",
-    tagline: "AI驱动的内容创作平台，Multi-Agent流水线",
-    description:
-      "针对公众号创作者「选题→成文」链路耗时长的痛点，0→1 全栈交付。设计 Search→Outline→Draft→Polish 四阶段 Multi-Agent 流水线，结合自研轻量 RAG 检索(Tika 解析 + 段落感知分块 + ZhipuAI 向量化)与 SSE 逐 token 打字机渲染，把创作流程从小时级压缩到分钟级。",
-    stack: ["Vue 3", "TypeScript", "Spring Boot", "Spring AI", "SSE", "RAG", "MySQL"],
-    tags: ["全栈", "AI"],
-    gradient: ["#10b981", "#059669"],
-    featured: true,
-    github: "https://gitee.com/summer-219/gzh-chat",
   },
   {
     slug: "finance-game",
@@ -90,6 +84,33 @@ export const projects: Project[] = [
     gradient: ["#0ea5e9", "#6366f1"],
     isCompanyProject: true,
   },
+  {
+    slug: "lan-transfer",
+    name: "软糖快传",
+    tagline: "局域网文件传输与群聊工具，PC/移动端自适应",
+    description:
+      "基于 WebSocket 的局域网文件传输与群聊应用，支持 PC 端与移动端自适应布局。实现拖拽上传、实时传输进度显示、临时文件篮共享、设备在线状态检测等功能。后端采用 Node.js + WebSocket 处理高并发传输，前端响应式设计适配多端场景，支持密码保护与定时清理。",
+    stack: ["Vue 3", "Node.js", "WebSocket", "HTML5", "CSS3"],
+    tags: ["全栈", "工具"],
+    gradient: ["#2563eb", "#06b6d4"],
+    featured: true,
+    github: "https://gitee.com/summer-219/lan-transmission",
+    images: [
+      "/images/projects/lan-transfer/desktop.jpg",
+      "/images/projects/lan-transfer/phone.png",
+    ],
+  },
+  {
+    slug: "form-auto-fill",
+    name: "表单一键填充",
+    tagline: "浏览器插件，智能识别并 auto-fill 各类 Web 表单",
+    description:
+      "Chrome 浏览器扩展插件，基于 DOM 分析智能识别页面表单字段，支持一键填充常用信息（姓名、电话、地址、邮箱等）。内置模板管理，支持自定义填充规则与字段映射，适用于日常重复性表单填写场景，大幅提升数据录入效率。",
+    stack: ["JavaScript", "Chrome Extension API", "DOM", "HTML5"],
+    tags: ["前端", "工具"],
+    gradient: ["#10b981", "#2563eb"],
+    github: "https://gitee.com/summer-219/form-extend",
+  },
 ];
 
 export const allTags: ProjectTag[] = [
@@ -100,4 +121,5 @@ export const allTags: ProjectTag[] = [
   "AI",
   "游戏",
   "后台",
+  "工具",
 ];

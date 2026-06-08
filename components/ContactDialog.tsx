@@ -48,7 +48,7 @@ export default function ContactDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[90vw] sm:max-w-sm p-0 overflow-hidden gap-0 border-[var(--border)]">
+      <DialogContent className="w-[90vw] sm:max-w-sm p-0 overflow-hidden gap-0" style={{ borderColor: "var(--border-subtle)" }}>
         {/* Banner */}
         <div className={`flex flex-col items-center gap-3 bg-gradient-to-b ${bannerGradient} px-6 pt-9 pb-6`}>
           <div

@@ -58,7 +58,7 @@ export function Hero() {
             <span className="absolute inline-flex w-full h-full rounded-full bg-green-400 opacity-75 animate-ping" />
             <span className="relative inline-flex w-full h-full rounded-full bg-green-500" />
           </span>
-          开放工作机会 · 寻找前端/全栈职位
+          寻找前端/全栈职位
         </motion.div>
 
         <motion.h1
@@ -83,9 +83,9 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.25 }}
           className="mt-6 text-xl md:text-2xl opacity-80 font-mono"
         >
-          <span className="text-indigo-500">&gt;</span>{" "}
+          <span className="text-blue-500">&gt;</span>{" "}
           <span>{typed}</span>
-          <span className="inline-block w-[2px] h-[1.1em] bg-current align-[-2px] ml-0.5 animate-pulse" />
+          <span className="inline-block w-[2px] h-[1.1em] bg-blue-500 align-[-2px] ml-0.5 animate-pulse" />
         </motion.div>
 
         <motion.p
@@ -105,7 +105,7 @@ export function Hero() {
         >
           <a
             href="#projects"
-            className="group relative inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-medium text-sm sm:text-base hover:shadow-lg hover:shadow-indigo-500/30 transition-shadow"
+            className="group relative inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium text-sm sm:text-base hover:shadow-lg hover:shadow-blue-500/30 transition-shadow"
           >
             <Sparkles size={16} className="sm:w-[18px] sm:h-[18px] group-hover:rotate-12 transition-transform" />
             查看作品
@@ -114,21 +114,21 @@ export function Hero() {
             href={profile.gitee}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-indigo-500/50 transition-colors text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-blue-500/50 transition-colors text-sm sm:text-base"
           >
             <GiteeIcon size={16} className="sm:w-[18px] sm:h-[18px] text-[#c71d23]" />
             Gitee
           </a>
           <button
             onClick={() => setEmailDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-indigo-500/50 transition-colors text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-blue-500/50 transition-colors text-sm sm:text-base"
           >
             <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />
             邮箱
           </button>
           <button
             onClick={() => setPhoneDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-indigo-500/50 transition-colors text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-blue-500/50 transition-colors text-sm sm:text-base"
           >
             <Phone size={16} className="sm:w-[18px] sm:h-[18px]" />
             <span className="hidden sm:inline">{profile.phone}</span>

@@ -8,16 +8,15 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
-import { profile } from "@/data/profile";
 
 const NAV_ITEMS = [
   { href: "#hero",     label: "首页" },
   { href: "#about",    label: "关于" },
   { href: "#skills",   label: "技能" },
-  { href: "#projects", label: "项目" },
+  { href: "#projects", label: "作品" },
 ];
 
 export function Navbar() {
@@ -28,17 +27,15 @@ export function Navbar() {
     restDelta: 0.001,
   });
 
-  // 滚动驱动的平滑过渡:0→80px 区间内连续插值
   const bgOpacity = useTransform(scrollY, [0, 80], [0, 1]);
-  const blurPx = useTransform(scrollY, [0, 80], [0, 12]);
-  const padY = useTransform(scrollY, [0, 80], [20, 12]);
+  const blurPx = useTransform(scrollY, [0, 80], [0, 14]);
+  const padY = useTransform(scrollY, [0, 80], [16, 10]);
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1]);
   const backdrop = useMotionTemplate`blur(${blurPx}px)`;
 
   const [active, setActive] = useState("#hero");
   const [open, setOpen] = useState(false);
 
-  // 滚动监听:更新当前激活的锚点
   useEffect(() => {
     const handler = () => {
       const sections = NAV_ITEMS.map((i) => document.querySelector(i.href));
@@ -58,62 +55,52 @@ export function Navbar() {
 
   return (
     <>
+      {/* Progress bar */}
       <motion.div
         style={{ scaleX }}
-        className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-indigo-500 via-pink-500 to-amber-400 origin-left z-[60]"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 origin-left z-[60]"
       />
+
       <motion.header
         style={{ paddingTop: padY, paddingBottom: padY }}
         className="fixed top-0 left-0 right-0 z-50"
       >
-        {/* 背景层:透明度 & 模糊跟随滚动平滑插值 */}
+        {/* BG layer */}
         <motion.div
           aria-hidden
           style={{
             opacity: bgOpacity,
             backdropFilter: backdrop,
             WebkitBackdropFilter: backdrop,
+            backgroundColor: "color-mix(in srgb, var(--card-bg) 80%, transparent)",
           }}
-          className="absolute inset-0 bg-[var(--card)]/80 pointer-events-none"
+          className="absolute inset-0 pointer-events-none"
         />
-        {/* 底边线层:独立 opacity,避免被整层模糊吃掉 */}
         <motion.div
           aria-hidden
-          style={{ opacity: borderOpacity }}
-          className="absolute inset-x-0 bottom-0 h-px bg-[var(--border)] pointer-events-none"
+          style={{ opacity: borderOpacity, backgroundColor: "var(--border-subtle)" }}
+          className="absolute inset-x-0 bottom-0 h-px pointer-events-none"
         />
 
-        <nav className="relative max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo区域 */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 font-bold text-lg">
-              <div className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-pink-500 flex items-center justify-center">
-                <Sparkles size={16} className="text-white" />
-              </div>
-              <span className="bg-gradient-to-r from-indigo-500 to-pink-500 bg-clip-text text-transparent">
-                {profile.nameEn}
-              </span>
-            </div>
-          </div>
-
-          {/* 桌面端导航 */}
-          <ul className="hidden md:flex items-center gap-1 bg-black/5 dark:bg-white/5 rounded-full p-1">
+        <nav className="relative max-w-6xl mx-auto px-6 flex items-center justify-center">
+          {/* Desktop nav — centered */}
+          <ul className="hidden md:flex items-center gap-0.5 rounded-full p-0.5">
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
                   className={cn(
-                    "relative px-4 py-2 text-sm font-medium rounded-full transition-all duration-300",
+                    "relative px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300",
                     active === item.href
-                      ? "text-white shadow-lg"
-                      : "opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/5"
+                      ? "text-white shadow-md"
+                      : "opacity-55 hover:opacity-90 hover:bg-black/5 dark:hover:bg-white/5"
                   )}
                 >
                   {active === item.href && (
                     <motion.span
                       layoutId="navActive"
-                      className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-pink-500 rounded-full -z-10"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-full -z-10"
+                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
                     />
                   )}
                   {item.label}
@@ -122,25 +109,26 @@ export function Navbar() {
             ))}
           </ul>
 
-          {/* 右侧操作区 */}
-          <div className="flex items-center gap-3">
+          {/* Right side — absolute positioned to keep nav centered */}
+          <div className="absolute right-6 flex items-center gap-2">
             <ThemeToggle />
             <button
               className="md:hidden p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
               onClick={() => setOpen((v) => !v)}
               aria-label="菜单"
             >
-              {open ? <X size={20} /> : <Menu size={20} />}
+              {open ? <X size={18} /> : <Menu size={18} />}
             </button>
           </div>
         </nav>
 
-        {/* 移动端展开菜单 */}
+        {/* Mobile menu */}
         {open && (
           <motion.ul
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative md:hidden mt-3 mx-6 glass rounded-2xl overflow-hidden shadow-xl"
+            transition={{ duration: 0.2 }}
+            className="relative md:hidden mt-2 mx-6 glass rounded-xl overflow-hidden shadow-xl"
           >
             {NAV_ITEMS.map((item) => (
               <li key={item.href}>
@@ -148,9 +136,9 @@ export function Navbar() {
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "block px-5 py-3 text-sm border-b border-[var(--border)] last:border-0 transition-colors",
-                    active === item.href 
-                      ? "bg-indigo-500/10 text-indigo-500 font-medium" 
+                    "block px-5 py-3 text-sm border-b border-black/5 dark:border-white/5 last:border-0 transition-colors",
+                    active === item.href
+                      ? "bg-blue-500/10 text-blue-500 font-medium"
                       : "hover:bg-black/5 dark:hover:bg-white/5"
                   )}
                 >

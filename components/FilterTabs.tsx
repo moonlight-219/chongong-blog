@@ -13,10 +13,8 @@ type Props<T extends string> = {
   options: FilterOption<T>[];
   value: T;
   onChange: (next: T) => void;
-  /** 用于 layoutId,避免多个 FilterTabs 共享时背景互相跳动 */
   layoutGroupId: string;
   className?: string;
-  /** 显示在 tabs 之前的标题/前缀,例如 "筛选" */
   prefix?: React.ReactNode;
 };
 
@@ -31,18 +29,18 @@ export function FilterTabs<T extends string>({
   return (
     <div
       className={cn(
-        "relative flex items-center gap-3 mb-10 flex-wrap md:flex-nowrap",
+        "relative flex items-center gap-2.5 overflow-x-auto no-scrollbar",
         className
       )}
     >
       {prefix && (
-        <div className="text-xs font-mono text-indigo-500/80 tracking-widest uppercase shrink-0">
+        <div className="text-[10px] font-mono text-blue-500/60 tracking-widest uppercase shrink-0">
           {prefix}
         </div>
       )}
       <div
         role="tablist"
-        className="relative flex items-center gap-1 p-1 rounded-full glass overflow-x-auto no-scrollbar max-w-full"
+        className="relative flex items-center gap-0.5 p-0.5 rounded-full bg-black/[0.03] dark:bg-white/[0.03] border border-transparent shrink-0"
       >
         {options.map((opt) => {
           const active = opt.key === value;
@@ -54,17 +52,17 @@ export function FilterTabs<T extends string>({
               onClick={() => onChange(opt.key)}
               data-cursor="hover"
               className={cn(
-                "relative px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60",
+                "relative px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-colors duration-200 outline-none",
                 active
                   ? "text-white"
-                  : "opacity-70 hover:opacity-100"
+                  : "opacity-60 hover:opacity-90"
               )}
             >
               {active && (
                 <motion.span
                   layoutId={`filter-pill-${layoutGroupId}`}
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 shadow-md shadow-indigo-500/30 -z-10"
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 shadow-sm shadow-blue-500/25 -z-10"
+                  transition={{ type: "spring", stiffness: 400, damping: 34 }}
                 />
               )}
               <span className="relative flex items-center gap-1.5">
@@ -72,7 +70,7 @@ export function FilterTabs<T extends string>({
                 {typeof opt.count === "number" && (
                   <span
                     className={cn(
-                      "inline-flex items-center justify-center min-w-[1.25rem] h-[1.1rem] px-1 rounded-full text-[10px] font-mono tabular-nums transition-colors",
+                      "inline-flex items-center justify-center min-w-[1rem] h-[0.9rem] px-1 rounded-full text-[9px] font-mono tabular-nums transition-colors",
                       active
                         ? "bg-white/25 text-white"
                         : "bg-black/5 dark:bg-white/10"
