@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Mail, Phone, Sparkles } from "lucide-react";
+import { ArrowDown, Mail, Phone, Sparkles, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { GiteeIcon } from "@/components/icons/Gitee";
 import { profile } from "@/data/profile";
 import ContactDialog from "@/components/ContactDialog";
 
-function useTypewriter(words: string[], speed = 90, pause = 1400) {
+/* ── typewriter hook ── */
+function useTypewriter(words: string[], speed = 80, pause = 1600) {
   const [idx, setIdx] = useState(0);
   const [text, setText] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -37,6 +38,16 @@ function useTypewriter(words: string[], speed = 90, pause = 1400) {
   return text;
 }
 
+/* ── stagger container ── */
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+const fadeUp = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+};
+
 export function Hero() {
   const typed = useTypewriter(profile.taglines);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
@@ -45,134 +56,210 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center px-6 pt-24"
+      className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto w-full relative z-10">
+      {/* ── ambient glow layers ── */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-blue-500/[0.07] blur-[120px]" />
+        <div className="absolute top-[20%] left-[15%] w-[300px] h-[300px] rounded-full bg-indigo-500/[0.05] blur-[100px]" />
+        <div className="absolute bottom-[15%] right-[10%] w-[250px] h-[250px] rounded-full bg-cyan-400/[0.04] blur-[80px]" />
+      </div>
+
+      {/* ── decorative orbit rings ── */}
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-sm mb-8"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+          className="w-[520px] h-[520px] md:w-[680px] md:h-[680px] rounded-full border border-white/[0.03]"
+        />
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 flex items-center justify-center"
         >
-          <span className="relative flex w-2 h-2">
-            <span className="absolute inline-flex w-full h-full rounded-full bg-green-400 opacity-75 animate-ping" />
-            <span className="relative inline-flex w-full h-full rounded-full bg-green-500" />
-          </span>
-          寻找前端/全栈职位
+          <div className="w-[380px] h-[380px] md:w-[500px] md:h-[500px] rounded-full border border-dashed border-white/[0.025]" />
+        </motion.div>
+        {/* orbit dot */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <div className="w-[520px] h-[520px] md:w-[680px] md:h-[680px] relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400/60 shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ── main content ── */}
+      <motion.div
+        variants={stagger}
+        initial="hidden"
+        animate="show"
+        className="relative z-10 max-w-3xl mx-auto w-full text-center"
+      >
+        {/* Status pill */}
+        <motion.div variants={fadeUp} className="flex justify-center mb-8">
+          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm text-sm text-white/70">
+            <span className="relative flex w-2 h-2">
+              <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+              <span className="relative inline-flex w-full h-full rounded-full bg-emerald-400" />
+            </span>
+            <span className="font-medium text-white/90">Open to Work</span>
+            <span className="text-white/30">|</span>
+            <span>前端 / 全栈</span>
+          </div>
         </motion.div>
 
+        {/* Name */}
         <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05]"
+          variants={fadeUp}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]"
         >
-          Hi, 我是 <span className="gradient-text">{profile.name}</span>
+          <span className="text-white/50 font-normal text-2xl sm:text-3xl md:text-4xl block mb-2 tracking-wide">
+            Hi, I&apos;m
+          </span>
+          <span className="bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
+            {profile.nameEn}
+          </span>
           <motion.span
             animate={{ rotate: [0, 14, -8, 14, 0] }}
-            transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 2.6 }}
-            className="inline-block origin-[70%_70%] ml-2"
+            transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 2.8 }}
+            className="inline-block origin-[70%_70%] ml-3 text-3xl sm:text-4xl md:text-5xl"
           >
             👋
           </motion.span>
         </motion.h1>
 
+        {/* Chinese name + title */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          className="mt-6 text-xl md:text-2xl opacity-80 font-mono"
+          variants={fadeUp}
+          className="mt-4 flex items-center justify-center gap-3 text-white/40 text-sm md:text-base"
         >
-          <span className="text-blue-500">&gt;</span>{" "}
-          <span>{typed}</span>
-          <span className="inline-block w-[2px] h-[1.1em] bg-blue-500 align-[-2px] ml-0.5 animate-pulse" />
+          <span className="font-medium text-white/70">{profile.name}</span>
+          <span className="w-1 h-1 rounded-full bg-white/20" />
+          <span>{profile.title}</span>
         </motion.div>
 
+        {/* Typewriter */}
+        <motion.div
+          variants={fadeUp}
+          className="mt-8 flex justify-center"
+        >
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] font-mono text-base md:text-lg">
+            <span className="text-blue-400 select-none">$</span>
+            <span className="text-white/80">{typed}</span>
+            <span className="inline-block w-[2px] h-[1.1em] bg-blue-400/80 align-[-2px] animate-pulse" />
+          </div>
+        </motion.div>
+
+        {/* Bio */}
         <motion.p
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="mt-8 max-w-2xl text-base md:text-lg opacity-70 leading-relaxed"
+          variants={fadeUp}
+          className="mt-8 max-w-xl mx-auto text-[15px] md:text-base text-white/50 leading-[1.8]"
         >
           {profile.bio}
         </motion.p>
 
+        {/* CTA buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.55 }}
-          className="mt-10 flex flex-wrap items-center gap-2 sm:gap-3"
+          variants={fadeUp}
+          className="mt-10 flex flex-wrap items-center justify-center gap-3"
         >
+          {/* Primary */}
           <a
             href="#projects"
-            className="group relative inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 text-white font-medium text-sm sm:text-base hover:shadow-lg hover:shadow-blue-500/30 transition-shadow"
+            className="group relative inline-flex items-center gap-2 px-7 py-3 rounded-full text-white font-medium text-[15px] overflow-hidden transition-shadow hover:shadow-lg hover:shadow-blue-500/25"
           >
-            <Sparkles size={16} className="sm:w-[18px] sm:h-[18px] group-hover:rotate-12 transition-transform" />
-            查看作品
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-500" />
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <Sparkles
+              size={17}
+              className="relative z-10 group-hover:rotate-12 transition-transform"
+            />
+            <span className="relative z-10">查看作品</span>
           </a>
+
+          {/* Gitee */}
           <a
             href={profile.gitee}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-blue-500/50 transition-colors text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.14] transition-all text-[15px] text-white/70 hover:text-white/90"
           >
-            <GiteeIcon size={16} className="sm:w-[18px] sm:h-[18px] text-[#c71d23]" />
+            <GiteeIcon size={17} className="text-[#c71d23]" />
             Gitee
           </a>
+
+          {/* Email */}
           <button
             onClick={() => setEmailDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-blue-500/50 transition-colors text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.14] transition-all text-[15px] text-white/70 hover:text-white/90"
           >
-            <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />
+            <Mail size={17} />
             邮箱
           </button>
+
+          {/* Phone */}
           <button
             onClick={() => setPhoneDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full glass hover:border-blue-500/50 transition-colors text-sm sm:text-base"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.14] transition-all text-[15px] text-white/70 hover:text-white/90"
           >
-            <Phone size={16} className="sm:w-[18px] sm:h-[18px]" />
+            <Phone size={17} />
             <span className="hidden sm:inline">{profile.phone}</span>
             <span className="sm:hidden">电话</span>
           </button>
         </motion.div>
 
-        <ContactDialog
-          isOpen={emailDialogOpen}
-          onClose={() => setEmailDialogOpen(false)}
-          type="email"
-          title="邮箱地址"
-          content={profile.email}
-          actionLabel="发送邮件"
-          actionHref={`mailto:${profile.email}`}
-        />
-        <ContactDialog
-          isOpen={phoneDialogOpen}
-          onClose={() => setPhoneDialogOpen(false)}
-          type="phone"
-          title="联系电话"
-          content={profile.phone}
-          actionLabel="拨打电话"
-          actionHref={`tel:${profile.phone}`}
-        />
-
-        {/* 向下提示 */}
-        <motion.a
-          href="#about"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity"
-          aria-label="滚动到下一节"
+        {/* Location */}
+        <motion.div
+          variants={fadeUp}
+          className="mt-6 flex items-center justify-center gap-1.5 text-xs text-white/25"
         >
-          <span className="text-xs font-mono">SCROLL</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity }}
-          >
-            <ArrowDown size={18} />
-          </motion.div>
-        </motion.a>
-      </div>
+          <MapPin size={12} />
+          <span>深圳</span>
+        </motion.div>
+      </motion.div>
+
+      {/* ── dialogs ── */}
+      <ContactDialog
+        isOpen={emailDialogOpen}
+        onClose={() => setEmailDialogOpen(false)}
+        type="email"
+        title="邮箱地址"
+        content={profile.email}
+        actionLabel="发送邮件"
+        actionHref={`mailto:${profile.email}`}
+      />
+      <ContactDialog
+        isOpen={phoneDialogOpen}
+        onClose={() => setPhoneDialogOpen(false)}
+        type="phone"
+        title="联系电话"
+        content={profile.phone}
+        actionLabel="拨打电话"
+        actionHref={`tel:${profile.phone}`}
+      />
+
+      {/* ── scroll indicator ── */}
+      <motion.a
+        href="#about"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/20 hover:text-white/60 transition-colors"
+        aria-label="滚动到下一节"
+      >
+        <span className="text-[10px] font-mono tracking-[0.2em] uppercase">
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ArrowDown size={14} strokeWidth={1.5} />
+        </motion.div>
+      </motion.a>
     </section>
   );
 }

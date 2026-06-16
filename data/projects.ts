@@ -45,9 +45,9 @@ export const projects: Project[] = [
     demoMobile: "http://101.200.120.68/",
     featured: true,
     images: [
-      "/images/projects/wallpaper/home.jpg",
-      "/images/projects/wallpaper/creator.jpg",
-      "/images/projects/wallpaper/upload.jpg",
+      "/images/projects/wallpaper/home.webp",
+      "/images/projects/wallpaper/creator.webp",
+      "/images/projects/wallpaper/upload.webp",
     ],
   },
   {
@@ -96,8 +96,8 @@ export const projects: Project[] = [
     featured: true,
     github: "https://gitee.com/summer-219/lan-transmission",
     images: [
-      "/images/projects/lan-transfer/desktop.jpg",
-      "/images/projects/lan-transfer/phone.png",
+      "/images/projects/lan-transfer/desktop.webp",
+      "/images/projects/lan-transfer/phone.webp",
     ],
   },
   {

@@ -97,10 +97,16 @@ body {
 
 /* Glass card style */
 .glass {
-  background: color-mix(in srgb, var(--card-bg) 75%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: color-mix(in srgb, var(--card-bg) 80%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-subtle);
+}
+
+/* Skip rendering off-screen sections until they scroll into view */
+section:not(#hero) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 
 /* Subtle glow ring */

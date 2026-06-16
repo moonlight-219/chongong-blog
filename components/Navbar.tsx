@@ -8,15 +8,19 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
+const GooeyNav = dynamic(() => import("./GooeyNav"), { ssr: false });
+
 const NAV_ITEMS = [
-  { href: "#hero",     label: "首页" },
-  { href: "#about",    label: "关于" },
-  { href: "#skills",   label: "技能" },
+  { href: "#hero", label: "首页" },
+  { href: "#about", label: "关于" },
+  { href: "#skills", label: "技能" },
   { href: "#projects", label: "作品" },
+  { href: "#showcase", label: "展示" },
 ];
 
 export function Navbar() {
@@ -33,25 +37,41 @@ export function Navbar() {
   const borderOpacity = useTransform(scrollY, [0, 80], [0, 1]);
   const backdrop = useMotionTemplate`blur(${blurPx}px)`;
 
-  const [active, setActive] = useState("#hero");
+  const [activeIndex, setActiveIndex] = useState(0);
   const [open, setOpen] = useState(false);
 
+  // Scroll-based active section detection (cached refs + rAF throttle)
   useEffect(() => {
+    const sectionEls = NAV_ITEMS.map((i) => document.querySelector(i.href) as HTMLElement | null);
+    let ticking = false;
     const handler = () => {
-      const sections = NAV_ITEMS.map((i) => document.querySelector(i.href));
-      const scrollPos = window.scrollY + window.innerHeight / 3;
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = sections[i] as HTMLElement | null;
-        if (el && el.offsetTop <= scrollPos) {
-          setActive(NAV_ITEMS[i].href);
-          return;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scrollPos = window.scrollY + window.innerHeight / 3;
+        for (let i = sectionEls.length - 1; i >= 0; i--) {
+          const el = sectionEls[i];
+          if (el && el.offsetTop <= scrollPos) {
+            setActiveIndex(i);
+            ticking = false;
+            return;
+          }
         }
-      }
+        ticking = false;
+      });
     };
     handler();
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  const handleItemClick = (index: number) => {
+    setActiveIndex(index);
+    const el = document.querySelector(NAV_ITEMS[index].href);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
@@ -83,33 +103,22 @@ export function Navbar() {
         />
 
         <nav className="relative max-w-6xl mx-auto px-6 flex items-center justify-center">
-          {/* Desktop nav — centered */}
-          <ul className="hidden md:flex items-center gap-0.5 rounded-full p-0.5">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  className={cn(
-                    "relative px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300",
-                    active === item.href
-                      ? "text-white shadow-md"
-                      : "opacity-55 hover:opacity-90 hover:bg-black/5 dark:hover:bg-white/5"
-                  )}
-                >
-                  {active === item.href && (
-                    <motion.span
-                      layoutId="navActive"
-                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-full -z-10"
-                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                    />
-                  )}
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          {/* Desktop nav — GooeyNav centered */}
+          <div className="hidden md:block">
+            <GooeyNav
+              items={NAV_ITEMS}
+              activeIndex={activeIndex}
+              onItemClick={handleItemClick}
+              particleCount={6}
+              particleDistances={[90, 10]}
+              particleR={100}
+              animationTime={600}
+              timeVariance={400}
+              colors={[1, 2, 3, 1, 2, 3, 1, 4]}
+            />
+          </div>
 
-          {/* Right side — absolute positioned to keep nav centered */}
+          {/* Right side */}
           <div className="absolute right-6 flex items-center gap-2">
             <ThemeToggle />
             <button
@@ -130,14 +139,14 @@ export function Navbar() {
             transition={{ duration: 0.2 }}
             className="relative md:hidden mt-2 mx-6 glass rounded-xl overflow-hidden shadow-xl"
           >
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.map((item, index) => (
               <li key={item.href}>
                 <a
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={cn(
                     "block px-5 py-3 text-sm border-b border-black/5 dark:border-white/5 last:border-0 transition-colors",
-                    active === item.href
+                    activeIndex === index
                       ? "bg-blue-500/10 text-blue-500 font-medium"
                       : "hover:bg-black/5 dark:hover:bg-white/5"
                   )}

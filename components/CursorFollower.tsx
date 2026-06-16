@@ -34,17 +34,27 @@ export function CursorFollower() {
       y.set(e.clientY);
       if (!visible) setVisible(true);
 
-      const target = e.target as HTMLElement | null;
-      setHovering(!!target?.closest(INTERACTIVE_SELECTOR));
+      // Throttle closest() query to one per frame
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(() => {
+          const target = lastTarget as HTMLElement | null;
+          setHovering(!!target?.closest(INTERACTIVE_SELECTOR));
+          rafPending = false;
+        });
+      }
+      lastTarget = e.target;
     };
+    let rafPending = false;
+    let lastTarget: EventTarget | null = null;
     const onDown = () => setPressed(true);
     const onUp = () => setPressed(false);
     const onLeave = () => setVisible(false);
     const onEnter = () => setVisible(true);
 
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mousedown", onDown);
-    window.addEventListener("mouseup", onUp);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mousedown", onDown, { passive: true });
+    window.addEventListener("mouseup", onUp, { passive: true });
     document.addEventListener("mouseleave", onLeave);
     document.addEventListener("mouseenter", onEnter);
     return () => {
@@ -68,25 +78,34 @@ export function CursorFollower() {
           width: hovering ? 56 : 36,
           height: hovering ? 56 : 36,
           backgroundColor: hovering
-            ? "rgba(99, 102, 241, 0.16)"
-            : "rgba(99, 102, 241, 0)",
+            ? "rgba(147, 197, 253, 0.14)"
+            : "rgba(147, 197, 253, 0)",
           borderColor: hovering
-            ? "rgba(236, 72, 153, 0.85)"
-            : "rgba(99, 102, 241, 0.55)",
+            ? "rgba(147, 197, 253, 0.7)"
+            : "rgba(147, 197, 253, 0.35)",
+          boxShadow: hovering
+            ? "0 0 24px rgba(147, 197, 253, 0.25), inset 0 0 12px rgba(147, 197, 253, 0.08)"
+            : "0 0 12px rgba(147, 197, 253, 0.08)",
           scale: pressed ? 0.82 : 1,
         }}
         transition={{ type: "spring", stiffness: 320, damping: 22 }}
-        className="pointer-events-none fixed left-0 top-0 z-[200] rounded-full border-2 -translate-x-1/2 -translate-y-1/2 mix-blend-difference"
+        className="pointer-events-none fixed left-0 top-0 z-[200] rounded-full border -translate-x-1/2 -translate-y-1/2"
       />
       {/* 内点 */}
       <motion.div
         aria-hidden
-        style={{ x: dotX, y: dotY, opacity: visible ? 1 : 0 }}
+        style={{
+          x: dotX,
+          y: dotY,
+          opacity: visible ? 1 : 0,
+          background: "radial-gradient(circle, #ffffff 0%, #93c5fd 50%, transparent 100%)",
+          boxShadow: "0 0 8px 3px rgba(147, 197, 253, 0.5), 0 0 20px 6px rgba(147, 197, 253, 0.15)",
+        }}
         animate={{
           scale: pressed ? 1.6 : hovering ? 0.4 : 1,
         }}
         transition={{ type: "spring", stiffness: 500, damping: 28 }}
-        className="pointer-events-none fixed left-0 top-0 z-[200] w-1.5 h-1.5 rounded-full -translate-x-1/2 -translate-y-1/2 bg-gradient-to-br from-indigo-400 to-pink-400 mix-blend-difference"
+        className="pointer-events-none fixed left-0 top-0 z-[200] w-1.5 h-1.5 rounded-full -translate-x-1/2 -translate-y-1/2"
       />
     </>
   );

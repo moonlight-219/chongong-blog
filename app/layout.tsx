@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { BackgroundFX } from "@/components/BackgroundFX";
 import { CursorFollower } from "@/components/CursorFollower";
-import { GlobalParticleCanvas } from "@/components/ParticleCanvas";
+import { GalaxyBackground } from "@/components/GalaxyBackground";
 import { profile } from "@/data/profile";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <GlobalParticleCanvas />
+          <GalaxyBackground />
           <BackgroundFX />
           <CursorFollower />
           <Navbar />
