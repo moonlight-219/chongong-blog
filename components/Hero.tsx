@@ -56,7 +56,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center lg:items-center lg:justify-start px-6 lg:px-12 xl:px-20 overflow-hidden"
     >
       {/* ── ambient glow layers ── */}
       <div className="pointer-events-none absolute inset-0">
@@ -96,10 +96,12 @@ export function Hero() {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 max-w-3xl mx-auto w-full text-center"
+        className="relative z-10 max-w-3xl lg:max-w-6xl mx-auto w-full flex flex-col lg:flex-row lg:items-center lg:gap-16 xl:gap-20"
       >
+        {/* ── Left column: text content ── */}
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:flex-1 lg:max-w-xl xl:max-w-[600px]">
         {/* Status pill */}
-        <motion.div variants={fadeUp} className="flex justify-center mb-8">
+        <motion.div variants={fadeUp} className="flex justify-center lg:justify-start mb-8">
           <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] backdrop-blur-sm text-sm text-black/60 dark:text-white/70">
             <span className="relative flex w-2 h-2">
               <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
@@ -134,7 +136,7 @@ export function Hero() {
         {/* Chinese name + title */}
         <motion.div
           variants={fadeUp}
-          className="mt-4 flex items-center justify-center gap-3 text-black/35 dark:text-white/40 text-sm md:text-base"
+          className="mt-4 flex items-center justify-center lg:justify-start gap-3 text-black/35 dark:text-white/40 text-sm md:text-base"
         >
           <span className="font-medium text-black/60 dark:text-white/70">{profile.name}</span>
           <span className="w-1 h-1 rounded-full bg-black/15 dark:bg-white/20" />
@@ -144,7 +146,7 @@ export function Hero() {
         {/* Typewriter */}
         <motion.div
           variants={fadeUp}
-          className="mt-8 flex justify-center"
+          className="mt-8 flex justify-center lg:justify-start"
         >
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] font-mono text-base md:text-lg">
             <span className="text-blue-400 dark:text-blue-400 select-none">$</span>
@@ -156,7 +158,7 @@ export function Hero() {
         {/* Bio */}
         <motion.p
           variants={fadeUp}
-          className="mt-8 max-w-xl mx-auto text-[15px] md:text-base text-black/50 dark:text-white/50 leading-[1.8]"
+          className="mt-8 max-w-xl mx-auto lg:mx-0 text-[15px] md:text-base text-black/50 dark:text-white/50 leading-[1.8]"
         >
           {profile.bio}
         </motion.p>
@@ -164,7 +166,7 @@ export function Hero() {
         {/* CTA buttons */}
         <motion.div
           variants={fadeUp}
-          className="mt-10 flex flex-wrap items-center justify-center gap-3"
+          className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-3"
         >
           {/* Primary */}
           <a
@@ -214,10 +216,64 @@ export function Hero() {
         {/* Location */}
         <motion.div
           variants={fadeUp}
-          className="mt-6 flex items-center justify-center gap-1.5 text-xs text-black/20 dark:text-white/25"
+          className="mt-6 flex items-center justify-center lg:justify-start gap-1.5 text-xs text-black/20 dark:text-white/25"
         >
           <MapPin size={12} />
           <span>深圳</span>
+        </motion.div>
+        </div>
+
+        {/* ── Right column: decorative (desktop only) ── */}
+        <motion.div
+          variants={fadeUp}
+          className="hidden lg:flex lg:flex-1 items-center justify-center relative"
+        >
+          {/* Code terminal card */}
+          <div className="relative z-10 w-[340px] xl:w-[400px] rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-md shadow-2xl shadow-black/20 overflow-hidden">
+            {/* Title bar */}
+            <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/[0.05]">
+              <div className="w-3 h-3 rounded-full bg-red-400/70" />
+              <div className="w-3 h-3 rounded-full bg-yellow-400/70" />
+              <div className="w-3 h-3 rounded-full bg-green-400/70" />
+              <span className="ml-2.5 text-[11px] font-mono text-white/25">portfolio.vue</span>
+            </div>
+            {/* Code body */}
+            <div className="px-5 py-4 font-mono text-[13px] leading-[1.8] text-white/50 space-y-0.5">
+              <p><span className="text-purple-400/80">&lt;template&gt;</span></p>
+              <p className="pl-4"><span className="text-blue-400/70">&lt;div</span> <span className="text-yellow-300/60">class</span>=<span className="text-green-400/70">"app"</span><span className="text-blue-400/70">&gt;</span></p>
+              <p className="pl-8"><span className="text-blue-400/70">&lt;Hero</span> <span className="text-yellow-300/60">name</span>=<span className="text-green-400/70">"{profile.name}"</span> <span className="text-blue-400/70">/&gt;</span></p>
+              <p className="pl-8"><span className="text-blue-400/70">&lt;About</span> <span className="text-blue-400/70">/&gt;</span></p>
+              <p className="pl-8"><span className="text-blue-400/70">&lt;Skills</span> <span className="text-blue-400/70">/&gt;</span></p>
+              <p className="pl-8"><span className="text-blue-400/70">&lt;Projects</span> <span className="text-blue-400/70">/&gt;</span></p>
+              <p className="pl-8"><span className="text-blue-400/70">&lt;Showcase</span> <span className="text-blue-400/70">/&gt;</span></p>
+              <p className="pl-4"><span className="text-blue-400/70">&lt;/div&gt;</span></p>
+              <p><span className="text-purple-400/80">&lt;/template&gt;</span></p>
+            </div>
+          </div>
+
+          {/* Decorative orbit rings */}
+          <div className="absolute -right-10 -top-10 w-[320px] h-[320px] xl:w-[420px] xl:h-[420px] pointer-events-none">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+              className="w-full h-full rounded-full border border-white/[0.03]"
+            />
+            <motion.div
+              animate={{ rotate: -360 }}
+              transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-6 rounded-full border border-dashed border-white/[0.025]"
+            />
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0"
+            >
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400/50 shadow-[0_0_10px_rgba(96,165,250,0.4)]" />
+            </motion.div>
+          </div>
+
+          {/* Subtle glow behind card */}
+          <div className="absolute w-[260px] h-[260px] rounded-full bg-blue-500/[0.06] blur-[80px] pointer-events-none" />
         </motion.div>
       </motion.div>
 
