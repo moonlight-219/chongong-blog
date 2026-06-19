@@ -6,7 +6,7 @@ const Galaxy = dynamic(() => import("./Galaxy"), { ssr: false });
 
 export function GalaxyBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none opacity-30 dark:opacity-100 transition-opacity duration-500" style={{ zIndex: -1 }}>
+    <div className="fixed inset-0 pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-500" style={{ zIndex: -1 }}>
       <Galaxy
         hueShift={220}
         density={0.6}

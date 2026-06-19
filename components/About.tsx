@@ -129,14 +129,14 @@ function ProfileCard() {
 
   return (
     <div className="relative rounded-2xl overflow-hidden glass h-full">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.04] via-transparent to-sky-500/[0.04]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.06] via-transparent to-sky-500/[0.06]" />
 
       <div className="relative p-6 md:p-8 flex flex-col h-full">
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
             <h3 className="text-2xl font-bold tracking-tight">{profile.name}</h3>
-            <p className="text-xs font-mono opacity-40 mt-1">{profile.nameEn}</p>
+            <p className="text-xs font-mono opacity-55 mt-1">{profile.nameEn}</p>
             <div className="mt-3 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium"
               style={{ background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.12)" }}
             >
@@ -176,12 +176,12 @@ function ProfileCard() {
 
         {/* Info tags */}
         <div className="mt-auto">
-          <h4 className="text-[10px] font-semibold uppercase tracking-widest opacity-30 mb-2.5">基本信息</h4>
+          <h4 className="text-[10px] font-semibold uppercase tracking-widest opacity-45 mb-2.5">基本信息</h4>
           <div className="flex flex-wrap gap-1.5">
             {INFO_ROWS.map(({ value, icon: Icon, color }) => (
               <span
                 key={value}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-black/[0.03] dark:bg-white/[0.04] text-xs font-medium"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-black/[0.05] dark:bg-white/[0.04] text-xs font-medium"
               >
                 <Icon size={11} style={{ color }} />
                 {value}
@@ -225,7 +225,7 @@ function CoreSkillsCard() {
         {CORE_SKILLS.map((skill) => (
           <div
             key={skill.label}
-            className="group relative p-3.5 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/[0.05] dark:hover:bg-white/[0.05] transition-all"
+            className="group relative p-3.5 rounded-xl bg-black/[0.04] dark:bg-white/[0.02] hover:bg-black/[0.07] dark:hover:bg-white/[0.05] transition-all"
           >
             <div className="flex items-start gap-3">
               <div
@@ -236,7 +236,7 @@ function CoreSkillsCard() {
               </div>
               <div className="min-w-0">
                 <h5 className="text-sm font-semibold">{skill.label}</h5>
-                <p className="text-[11px] opacity-45 mt-0.5">{skill.desc}</p>
+                <p className="text-[11px] opacity-55 mt-0.5">{skill.desc}</p>
               </div>
             </div>
           </div>
@@ -266,7 +266,7 @@ function HighlightCard({ icon: Icon, accent, title, desc }: {
           <Icon size={16} />
         </div>
         <h4 className="font-semibold text-sm mb-1.5">{title}</h4>
-        <p className="text-xs opacity-55 leading-relaxed line-clamp-3">{desc}</p>
+        <p className="text-xs opacity-65 leading-relaxed line-clamp-3">{desc}</p>
       </div>
     </div>
   );
@@ -285,7 +285,7 @@ function TimelineSection() {
 
       <ol
         ref={ref}
-        className="relative pl-5 border-l-[1.5px] border-dashed border-black/8 dark:border-white/8 space-y-4"
+        className="relative pl-5 border-l-[1.5px] border-dashed border-black/[0.12] dark:border-white/8 space-y-4"
       >
         {profile.timeline.map((item, i) => (
           <motion.li
@@ -308,7 +308,7 @@ function TimelineSection() {
                   {item.year}
                 </span>
               </div>
-              <p className="opacity-55 leading-relaxed text-xs">{item.desc}</p>
+              <p className="opacity-65 leading-relaxed text-xs">{item.desc}</p>
             </div>
           </motion.li>
         ))}

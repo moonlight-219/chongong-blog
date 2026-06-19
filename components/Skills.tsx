@@ -27,12 +27,12 @@ export function Skills() {
         count: skills.filter((s) => s.category === c.key).length,
       })),
     ],
-    []
+    [],
   );
 
   return (
     <SectionWrapper id="skills" title="技能栈">
-      <p className="opacity-50 -mt-6 mb-8 max-w-lg text-sm">
+      <p className="opacity-60 -mt-6 mb-8 max-w-lg text-sm">
         前端为主，具备全栈开发能力
       </p>
 
@@ -43,6 +43,7 @@ export function Skills() {
         onChange={setFilter}
         prefix="分类"
       />
+      <br />
 
       <div ref={ref} className="flex flex-wrap gap-2.5">
         {filtered.map((skill, i) => (
@@ -58,7 +59,7 @@ export function Skills() {
             }}
             whileHover={{ y: -2, scale: 1.05 }}
             data-cursor="hover"
-            className="group relative inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/[0.06] dark:hover:bg-white/[0.06] border border-transparent hover:border-blue-500/20 transition-all cursor-default"
+            className="group relative inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-black/[0.05] dark:bg-white/[0.03] hover:bg-black/[0.08] dark:hover:bg-white/[0.06] border border-transparent hover:border-blue-500/20 transition-all cursor-default"
           >
             <span
               className="w-2 h-2 rounded-full shrink-0"
@@ -74,9 +75,13 @@ export function Skills() {
                   style={{
                     width: "3px",
                     height: `${4 + dot * 1.5}px`,
-                    backgroundColor: dot <= skill.level ? skill.color : "transparent",
-                    opacity: dot <= skill.level ? 0.6 : 0.15,
-                    border: dot <= skill.level ? "none" : "1px solid var(--border-subtle)",
+                    backgroundColor:
+                      dot <= skill.level ? skill.color : "transparent",
+                    opacity: dot <= skill.level ? 0.6 : 0.3,
+                    border:
+                      dot <= skill.level
+                        ? "none"
+                        : "1px solid var(--border-subtle)",
                   }}
                 />
               ))}
