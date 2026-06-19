@@ -2,8 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { projects } from "@/data/projects";
+import { ImageLightbox } from "./ImageLightbox";
 
 const CircularGallery = dynamic(() => import("./CircularGallery"), {
   ssr: false,
@@ -29,6 +30,13 @@ const slides = projects.flatMap((p) =>
 export function ShowcaseCarousel() {
   const [mounted, setMounted] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const allImages = useMemo(
+    () => slides.map((s) => s.src),
+    []
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -47,14 +55,41 @@ export function ShowcaseCarousel() {
 
   if (!mounted || galleryItems.length === 0) return null;
 
-  return mobile ? <MobileFallback /> : <DesktopGallery />;
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  return (
+    <>
+      {mobile ? (
+        <MobileFallback slides={slides} allImages={allImages} onImageClick={openLightbox} />
+      ) : (
+        <DesktopGallery allImages={allImages} onImageClick={openLightbox} />
+      )}
+
+      <ImageLightbox
+        images={allImages}
+        index={lightboxIndex}
+        open={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        onNavigate={setLightboxIndex}
+      />
+    </>
+  );
 }
 
 /* ═══════════════════════════════════════
    Desktop: WebGL CircularGallery
    ═══════════════════════════════════════ */
 
-function DesktopGallery() {
+function DesktopGallery({
+  allImages,
+  onImageClick,
+}: {
+  allImages: string[];
+  onImageClick: (index: number) => void;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -79,7 +114,7 @@ function DesktopGallery() {
         </h2>
       </motion.div>
 
-      {/* Gallery container — full width */}
+      {/* Gallery container — full width, click to enlarge */}
       <div className="relative w-full" style={{ height: 480 }}>
         {CircularGallery && (
           <CircularGallery
@@ -87,12 +122,13 @@ function DesktopGallery() {
             borderRadius={0.05}
             scrollSpeed={4}
             scrollEase={0.06}
+            onItemClick={onImageClick}
           />
         )}
       </div>
 
       <p className="text-center text-[11px] opacity-30 mt-4">
-        拖拽或滚轮浏览作品截图
+        拖拽或滚轮浏览 · 点击查看大图
       </p>
     </section>
   );
@@ -102,7 +138,15 @@ function DesktopGallery() {
    Mobile: horizontal swipe with snap
    ═══════════════════════════════════════ */
 
-function MobileFallback() {
+function MobileFallback({
+  slides,
+  allImages,
+  onImageClick,
+}: {
+  slides: { src: string; name: string; tagline: string; gradient: [string, string] }[];
+  allImages: string[];
+  onImageClick: (index: number) => void;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -140,8 +184,9 @@ function MobileFallback() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: i * 0.06 }}
-            className="snap-center shrink-0"
+            className="snap-center shrink-0 cursor-pointer"
             style={{ width: "min(320px, 80vw)" }}
+            onClick={() => onImageClick(i)}
           >
             <CarouselCard slide={slide} />
           </motion.div>
@@ -149,7 +194,7 @@ function MobileFallback() {
         <div className="shrink-0 w-4" />
       </div>
 
-      <p className="text-center text-[11px] opacity-30 mt-4">左右滑动浏览</p>
+      <p className="text-center text-[11px] opacity-30 mt-4">左右滑动浏览 · 点击查看大图</p>
     </section>
   );
 }

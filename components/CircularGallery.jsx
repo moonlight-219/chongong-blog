@@ -380,7 +380,8 @@ class App {
       borderRadius = 0,
       font = 'bold 30px Figtree',
       scrollSpeed = 2,
-      scrollEase = 0.05
+      scrollEase = 0.05,
+      onItemClick,
     } = {}
   ) {
     document.documentElement.classList.remove('no-js');
@@ -388,6 +389,8 @@ class App {
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
+    this.onItemClick = onItemClick;
+    this.originalLength = (items && items.length) ? items.length : 0;
     this.createRenderer();
     this.createCamera();
     this.createScene();
@@ -532,6 +535,7 @@ class App {
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
+    this.boundOnClick = this.onClick.bind(this);
     window.addEventListener('resize', this.boundOnResize, { passive: true });
     el.addEventListener('wheel', this.boundOnWheel, { passive: false });
     el.addEventListener('mousedown', this.boundOnTouchDown);
@@ -540,6 +544,46 @@ class App {
     el.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
     el.addEventListener('touchmove', this.boundOnTouchMove, { passive: true });
     el.addEventListener('touchend', this.boundOnTouchUp, { passive: true });
+    if (this.onItemClick) {
+      this.gl.canvas.addEventListener('click', this.boundOnClick);
+    }
+  }
+
+  onClick(e) {
+    if (!this.medias || !this.medias.length || !this.onItemClick) return;
+
+    const canvas = this.gl.canvas;
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    // Convert screen pixel coords to world coords
+    const worldX = (clickX / this.screen.width - 0.5) * this.viewport.width;
+    const worldY = -(clickY / this.screen.height - 0.5) * this.viewport.height;
+
+    // Hit test: find which media plane contains the click point
+    let hit = null;
+    let hitDist = Infinity;
+    for (const m of this.medias) {
+      const halfW = m.plane.scale.x / 2;
+      const halfH = m.plane.scale.y / 2;
+      const cx = m.plane.position.x;
+      const cy = m.plane.position.y;
+      if (worldX >= cx - halfW && worldX <= cx + halfW &&
+          worldY >= cy - halfH && worldY <= cy + halfH) {
+        // Prefer the one closer to center (in case of overlap)
+        const dist = Math.abs(cx);
+        if (dist < hitDist) {
+          hitDist = dist;
+          hit = m;
+        }
+      }
+    }
+
+    if (hit) {
+      const originalIndex = hit.index % this.originalLength;
+      this.onItemClick(originalIndex);
+    }
   }
   destroy() {
     const el = this.container;
@@ -554,6 +598,9 @@ class App {
     el.removeEventListener('touchstart', this.boundOnTouchDown);
     el.removeEventListener('touchmove', this.boundOnTouchMove);
     el.removeEventListener('touchend', this.boundOnTouchUp);
+    if (this.boundOnClick && this.renderer && this.renderer.gl) {
+      this.renderer.gl.canvas.removeEventListener('click', this.boundOnClick);
+    }
     if (this.renderer && this.renderer.gl) {
       const gl = this.renderer.gl;
       gl.getExtension('WEBGL_lose_context')?.loseContext();
@@ -572,9 +619,13 @@ export default function CircularGallery({
   font = 'bold 30px Figtree',
   fontUrl = undefined,
   scrollSpeed = 2,
-  scrollEase = 0.05
+  scrollEase = 0.05,
+  onItemClick,
 }) {
   const containerRef = useRef(null);
+  const onItemClickRef = useRef(onItemClick);
+  onItemClickRef.current = onItemClick;
+
   useEffect(() => {
     if (!containerRef.current) return;
     let app;
@@ -588,7 +639,8 @@ export default function CircularGallery({
         borderRadius,
         font: resolvedFont,
         scrollSpeed,
-        scrollEase
+        scrollEase,
+        onItemClick: (index) => onItemClickRef.current?.(index),
       });
     });
     return () => {

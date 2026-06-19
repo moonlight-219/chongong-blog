@@ -23,19 +23,24 @@ export const projects: Project[] = [
     name: "企业经营管理沙盘",
     tagline: "高校跨学科企业经营仿真实训平台，8+岗位50+页面",
     description:
-      "基于 RuoYi-Vue 定制开发，支持学生端 / 教师端双角色与 8+ 岗位(总经理、财务、销售、生产、税务、投资经理、碳金融…)50+ 子页面按需加载。Pinia 多 store 治理权限隔离，ECharts 按需引入 + ResizeObserver 自适应做教师端数据看板，AI 学情分析模块支持 Markdown 流式对话与结果导出。",
-    stack: ["Vue 3", "Pinia", "Element Plus", "ECharts", "RuoYi-Vue"],
+      "基于 RuoYi-Vue 定制开发，支持学生端 / 教师端双角色与 8+ 岗位(总经理、财务、销售、生产、税务、投资经理、碳金融…)50+ 子页面按需加载。独立完成 8+ 岗位 50+ 页面的表单架构与功能实现，通过 dataMap + 动态组件实现表单项动态切换，降低表单页面开发成本；ECharts 按需引入做教师端数据看板，Pinia 多 store 权限隔离，结合 provide/inject 下传 isReadOnly 状态控制编辑/删除等按钮的只读显示。",
+    stack: ["Vue 3", "Pinia", "Element Plus", "ECharts", "Axios", "RuoYi-Vue"],
     tags: ["前端"],
     gradient: ["#6366f1", "#ec4899"],
     featured: true,
     isCompanyProject: true,
+    images: [
+      "/images/projects/1.jpg",
+      "/images/projects/2.jpg",
+      "/images/projects/3.jpg",
+    ],
   },
   {
     slug: "wallpaper-share",
     name: "壁纸分享室",
     tagline: "小程序/H5双端壁纸浏览社区 + 管理后台",
     description:
-      "Vue 3 + uni-app 实现小程序 / H5 一套代码双端运行，配套 Element Plus 管理后台，Spring Boot + JPA 提供 RESTful API。JWT 无状态鉴权 + 基于 HTTP 方法的细粒度权限，OSS 上传时自动转 WebP + 多尺寸缩略图流水线，定时任务校验高频点赞/收藏计数。",
+      "移动端的壁纸浏览与创作平台，uni-app + Vue 3 条件编译实现微信小程序 + H5 双端运行(H5 用 Vite/Nginx 部署，小程序直接发布)，配套 Spring Boot + MySQL + 阿里云 OSS 后台。手写图片裁剪工具(Canvas + CSS 滤镜，支持 9:20/16:21/1:1 多比例实时预览)；图片上传自动转 WebP 压缩 30%-50% + 多尺寸缩略图生成(300/600/1200px)，列表页加载速度提升 50%+。点赞/收藏 Toggle 组件 + 一对多数据绑定 + 唯一约束 + 时间排序；后台 ECharts 数据可视化(折线/柱状/饼状/双轴对比/词云)，支持日/周/月维度切换。",
     stack: ["Vue 3", "uni-app", "Spring Boot", "MySQL", "阿里云 OSS"],
     tags: ["全栈", "小程序"],
     gradient: ["#06b6d4", "#3b82f6"],
@@ -45,18 +50,18 @@ export const projects: Project[] = [
     demoMobile: "http://101.200.120.68/",
     featured: true,
     images: [
-      "/images/projects/wallpaper/home.webp",
-      "/images/projects/wallpaper/creator.webp",
-      "/images/projects/wallpaper/upload.webp",
+      "/images/projects/9.jpg",
+      "/images/projects/10.jpg",
+      "/images/projects/11.jpg",
     ],
   },
   {
     slug: "ai-practice",
     name: "AI 智能陪练系统",
-    tagline: "语音对话式财商教育平台，三端架构",
+    tagline: "语音对话式 AI 训练 SaaS 平台，三端架构",
     description:
-      "Vue 3 三端架构(管理员 / 教师 / 学生)的财商教育平台，独立完成 AI 智能陪练核心模块。MediaRecorder 录音 + ASR 语音识别 + TTS 合成(多音色 + 音频缓存)实现完整语音对话链路;3D 全息场景地图(S 型曲线节点 + GPU 加速降级)、可视化对话流编辑、多维度智能评分与雷达图能力画像、html2canvas + jsPDF 高清 PDF 报告导出。",
-    stack: ["Vue 3", "Pinia", "Element Plus", "ECharts", "ASR/TTS", "html2canvas", "jsPDF"],
+      "Vue 3 三端架构(管理员 / 教师 / 学生)的 AI 对话训练 SaaS 平台。学生端封装 PhoneSimulator 手机模拟器组件(视频播放、录音、动作捕捉、手势识别)，MediaRecorder + Web Audio API 录音生成 16kHz 音频，fetch ReadableStream 手动读取 SSE 实现流式语音识别，TTS 角色配音通过音频缓冲链路完成；ECharts 雷达图多维度成绩分析，html2canvas + jsPDF 生成 A4 纸 PDF 一键导出。教师端超终端式控制台，封装 ScriptManager、TaskManager 等管理组件，通过 theme 参数区分角色身份并动态调整接口调用。",
+    stack: ["Vue 3", "Vite", "Pinia", "Element Plus", "ECharts", "ASR/TTS", "html2canvas", "jsPDF"],
     tags: ["前端", "AI"],
     gradient: ["#7c3aed", "#06b6d4"],
     featured: true,
@@ -72,6 +77,10 @@ export const projects: Project[] = [
     tags: ["前端", "游戏"],
     gradient: ["#f59e0b", "#ef4444"],
     isCompanyProject: true,
+    images: [
+      "/images/projects/4.jpg",
+      "/images/projects/5.jpg",
+    ],
   },
   {
     slug: "finance-quiz",
@@ -96,8 +105,9 @@ export const projects: Project[] = [
     featured: true,
     github: "https://gitee.com/summer-219/lan-transmission",
     images: [
-      "/images/projects/lan-transfer/desktop.webp",
-      "/images/projects/lan-transfer/phone.webp",
+      "/images/projects/6.jpg",
+      "/images/projects/7.jpg",
+      "/images/projects/8.jpg",
     ],
   },
   {

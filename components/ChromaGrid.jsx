@@ -105,9 +105,15 @@ export const ChromaGrid = ({
           style={{
             '--card-border': item.borderColor || 'transparent',
             '--card-gradient': item.gradient,
-            cursor: item.url ? 'pointer' : 'default',
+            cursor: (item.url || item.onItemClick) ? 'pointer' : 'default',
           }}
-          onClick={() => item.url && window.open(item.url, '_blank', 'noopener,noreferrer')}
+          onClick={() => {
+            if (item.onItemClick) {
+              item.onItemClick();
+            } else if (item.url) {
+              window.open(item.url, '_blank', 'noopener,noreferrer');
+            }
+          }}
         >
           {renderItem ? renderItem(item, i) : (
             <>

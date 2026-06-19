@@ -9,6 +9,29 @@
   --card-bg: #ffffff;
   --border-subtle: rgba(0, 0, 0, 0.06);
 
+  /* Chroma card variables — light mode */
+  --chroma-card-bg: rgba(0, 0, 0, 0.03);
+  --chroma-card-border: rgba(0, 0, 0, 0.08);
+  --chroma-card-spotlight: rgba(0, 0, 0, 0.04);
+  --chroma-title: rgba(10, 10, 10, 0.88);
+  --chroma-title-hover: rgba(10, 10, 10, 1);
+  --chroma-tagline: rgba(10, 10, 10, 0.55);
+  --chroma-desc: rgba(10, 10, 10, 0.45);
+  --chroma-desc-hover: rgba(10, 10, 10, 0.6);
+  --chroma-link-bg: rgba(0, 0, 0, 0.05);
+  --chroma-link-bg-hover: rgba(0, 0, 0, 0.1);
+  --chroma-link-color: rgba(10, 10, 10, 0.45);
+  --chroma-link-color-hover: rgba(10, 10, 10, 0.8);
+  --chroma-tag-bg: rgba(0, 0, 0, 0.04);
+  --chroma-tag-color: rgba(10, 10, 10, 0.4);
+  --chroma-stack-bg: rgba(0, 0, 0, 0.03);
+  --chroma-stack-color: rgba(10, 10, 10, 0.35);
+  --chroma-badge-bg: rgba(0, 0, 0, 0.04);
+  --chroma-badge-color: rgba(10, 10, 10, 0.35);
+  --chroma-divider: rgba(0, 0, 0, 0.06);
+  --chroma-overlay-bg: rgba(255, 255, 255, 0.25);
+  --chroma-fade-bg: rgba(255, 255, 255, 0.15);
+
   /* shadcn UI variables */
   --background: 0 0% 98%;
   --foreground: 222.2 84% 4.9%;
@@ -39,6 +62,29 @@
   --card-bg: #111114;
   --border-subtle: rgba(255, 255, 255, 0.06);
 
+  /* Chroma card variables — dark mode */
+  --chroma-card-bg: rgba(255, 255, 255, 0.04);
+  --chroma-card-border: rgba(255, 255, 255, 0.06);
+  --chroma-card-spotlight: rgba(255, 255, 255, 0.06);
+  --chroma-title: rgba(255, 255, 255, 0.92);
+  --chroma-title-hover: #fff;
+  --chroma-tagline: rgba(255, 255, 255, 0.7);
+  --chroma-desc: rgba(255, 255, 255, 0.38);
+  --chroma-desc-hover: rgba(255, 255, 255, 0.55);
+  --chroma-link-bg: rgba(255, 255, 255, 0.05);
+  --chroma-link-bg-hover: rgba(255, 255, 255, 0.12);
+  --chroma-link-color: rgba(255, 255, 255, 0.35);
+  --chroma-link-color-hover: rgba(255, 255, 255, 0.85);
+  --chroma-tag-bg: rgba(255, 255, 255, 0.04);
+  --chroma-tag-color: rgba(255, 255, 255, 0.4);
+  --chroma-stack-bg: rgba(255, 255, 255, 0.03);
+  --chroma-stack-color: rgba(255, 255, 255, 0.3);
+  --chroma-badge-bg: rgba(255, 255, 255, 0.04);
+  --chroma-badge-color: rgba(255, 255, 255, 0.3);
+  --chroma-divider: rgba(255, 255, 255, 0.05);
+  --chroma-overlay-bg: rgba(0, 0, 0, 0.15);
+  --chroma-fade-bg: rgba(0, 0, 0, 0.08);
+
   /* shadcn UI variables */
   --background: 240 6% 4%;
   --foreground: 210 40% 98%;
@@ -63,6 +109,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-anchor: none;
+  overscroll-behavior: none;
 }
 
 body {
@@ -104,7 +152,7 @@ body {
 }
 
 /* Skip rendering off-screen sections until they scroll into view */
-section:not(#hero) {
+section:not(#hero):not(#showcase) {
   content-visibility: auto;
   contain-intrinsic-size: auto 600px;
 }

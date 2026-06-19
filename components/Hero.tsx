@@ -70,14 +70,14 @@ export function Hero() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-          className="w-[520px] h-[520px] md:w-[680px] md:h-[680px] rounded-full border border-white/[0.03]"
+          className="w-[520px] h-[520px] md:w-[680px] md:h-[680px] rounded-full border border-black/[0.04] dark:border-white/[0.03]"
         />
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
           className="absolute inset-0 flex items-center justify-center"
         >
-          <div className="w-[380px] h-[380px] md:w-[500px] md:h-[500px] rounded-full border border-dashed border-white/[0.025]" />
+          <div className="w-[380px] h-[380px] md:w-[500px] md:h-[500px] rounded-full border border-dashed border-black/[0.035] dark:border-white/[0.025]" />
         </motion.div>
         {/* orbit dot */}
         <motion.div
@@ -100,13 +100,13 @@ export function Hero() {
       >
         {/* Status pill */}
         <motion.div variants={fadeUp} className="flex justify-center mb-8">
-          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm text-sm text-white/70">
+          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] backdrop-blur-sm text-sm text-black/60 dark:text-white/70">
             <span className="relative flex w-2 h-2">
               <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
               <span className="relative inline-flex w-full h-full rounded-full bg-emerald-400" />
             </span>
-            <span className="font-medium text-white/90">Open to Work</span>
-            <span className="text-white/30">|</span>
+            <span className="font-medium text-black/80 dark:text-white/90">Open to Work</span>
+            <span className="text-black/20 dark:text-white/30">|</span>
             <span>前端 / 全栈</span>
           </div>
         </motion.div>
@@ -116,10 +116,10 @@ export function Hero() {
           variants={fadeUp}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]"
         >
-          <span className="text-white/50 font-normal text-2xl sm:text-3xl md:text-4xl block mb-2 tracking-wide">
+          <span className="text-black/40 dark:text-white/50 font-normal text-2xl sm:text-3xl md:text-4xl block mb-2 tracking-wide">
             Hi, I&apos;m
           </span>
-          <span className="bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-zinc-800 via-zinc-700 to-zinc-500 dark:from-white dark:via-white dark:to-white/60 bg-clip-text text-transparent">
             {profile.nameEn}
           </span>
           <motion.span
@@ -134,10 +134,10 @@ export function Hero() {
         {/* Chinese name + title */}
         <motion.div
           variants={fadeUp}
-          className="mt-4 flex items-center justify-center gap-3 text-white/40 text-sm md:text-base"
+          className="mt-4 flex items-center justify-center gap-3 text-black/35 dark:text-white/40 text-sm md:text-base"
         >
-          <span className="font-medium text-white/70">{profile.name}</span>
-          <span className="w-1 h-1 rounded-full bg-white/20" />
+          <span className="font-medium text-black/60 dark:text-white/70">{profile.name}</span>
+          <span className="w-1 h-1 rounded-full bg-black/15 dark:bg-white/20" />
           <span>{profile.title}</span>
         </motion.div>
 
@@ -146,9 +146,9 @@ export function Hero() {
           variants={fadeUp}
           className="mt-8 flex justify-center"
         >
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] font-mono text-base md:text-lg">
-            <span className="text-blue-400 select-none">$</span>
-            <span className="text-white/80">{typed}</span>
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] font-mono text-base md:text-lg">
+            <span className="text-blue-400 dark:text-blue-400 select-none">$</span>
+            <span className="text-black/70 dark:text-white/80">{typed}</span>
             <span className="inline-block w-[2px] h-[1.1em] bg-blue-400/80 align-[-2px] animate-pulse" />
           </div>
         </motion.div>
@@ -156,7 +156,7 @@ export function Hero() {
         {/* Bio */}
         <motion.p
           variants={fadeUp}
-          className="mt-8 max-w-xl mx-auto text-[15px] md:text-base text-white/50 leading-[1.8]"
+          className="mt-8 max-w-xl mx-auto text-[15px] md:text-base text-black/50 dark:text-white/50 leading-[1.8]"
         >
           {profile.bio}
         </motion.p>
@@ -185,7 +185,7 @@ export function Hero() {
             href={profile.gitee}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.14] transition-all text-[15px] text-white/70 hover:text-white/90"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:border-black/[0.14] dark:hover:border-white/[0.14] transition-all text-[15px] text-black/60 dark:text-white/70 hover:text-black/80 dark:hover:text-white/90"
           >
             <GiteeIcon size={17} className="text-[#c71d23]" />
             Gitee
@@ -194,7 +194,7 @@ export function Hero() {
           {/* Email */}
           <button
             onClick={() => setEmailDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.14] transition-all text-[15px] text-white/70 hover:text-white/90"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:border-black/[0.14] dark:hover:border-white/[0.14] transition-all text-[15px] text-black/60 dark:text-white/70 hover:text-black/80 dark:hover:text-white/90"
           >
             <Mail size={17} />
             邮箱
@@ -203,7 +203,7 @@ export function Hero() {
           {/* Phone */}
           <button
             onClick={() => setPhoneDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.14] transition-all text-[15px] text-white/70 hover:text-white/90"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-black/[0.08] dark:border-white/[0.08] bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:border-black/[0.14] dark:hover:border-white/[0.14] transition-all text-[15px] text-black/60 dark:text-white/70 hover:text-black/80 dark:hover:text-white/90"
           >
             <Phone size={17} />
             <span className="hidden sm:inline">{profile.phone}</span>
@@ -214,7 +214,7 @@ export function Hero() {
         {/* Location */}
         <motion.div
           variants={fadeUp}
-          className="mt-6 flex items-center justify-center gap-1.5 text-xs text-white/25"
+          className="mt-6 flex items-center justify-center gap-1.5 text-xs text-black/20 dark:text-white/25"
         >
           <MapPin size={12} />
           <span>深圳</span>
@@ -247,7 +247,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/20 hover:text-white/60 transition-colors"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-black/15 dark:text-white/20 hover:text-black/50 dark:hover:text-white/60 transition-colors"
         aria-label="滚动到下一节"
       >
         <span className="text-[10px] font-mono tracking-[0.2em] uppercase">
