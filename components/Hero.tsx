@@ -1,276 +1,186 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Mail, Phone, Sparkles, MapPin } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  ArrowDown,
+  Bot,
+  Briefcase,
+  Code2,
+  FileText,
+  GraduationCap,
+  Mail,
+  MapPin,
+  Phone,
+  Rocket,
+  Smartphone,
+  Sparkles,
+  Target,
+} from "lucide-react";
+import { useState } from "react";
 import { GiteeIcon } from "@/components/icons/Gitee";
 import { profile } from "@/data/profile";
 import ContactDialog from "@/components/ContactDialog";
 
-/* ── typewriter hook ── */
-function useTypewriter(words: string[], speed = 80, pause = 1600) {
-  const [idx, setIdx] = useState(0);
-  const [text, setText] = useState("");
-  const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    const current = words[idx];
-    if (!deleting && text === current) {
-      const t = setTimeout(() => setDeleting(true), pause);
-      return () => clearTimeout(t);
-    }
-    if (deleting && text === "") {
-      setDeleting(false);
-      setIdx((i) => (i + 1) % words.length);
-      return;
-    }
-    const t = setTimeout(
-      () => {
-        setText((prev) =>
-          deleting ? prev.slice(0, -1) : current.slice(0, prev.length + 1)
-        );
-      },
-      deleting ? speed / 2 : speed
-    );
-    return () => clearTimeout(t);
-  }, [text, deleting, idx, words, speed, pause]);
-
-  return text;
-}
-
-/* ── stagger container ── */
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-};
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
 };
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const coreSkills = [
+  { icon: Code2, label: "Vue 生态", desc: "Vue 3 / Pinia / Vue Router / Element Plus", accent: "#3b82f6" },
+  { icon: Smartphone, label: "多端业务交付", desc: "PC 管理端、H5、微信小程序", accent: "#0ea5e9" },
+  { icon: Target, label: "数据可视化", desc: "ECharts 仪表盘、雷达图、趋势图", accent: "#2563eb" },
+  { icon: Bot, label: "AI 协同开发", desc: "Codex / Claude / Cursor / Qoder", accent: "#8b5cf6" },
+  { icon: Rocket, label: "工程化", desc: "Vite / TypeScript / Axios / Spring Boot", accent: "#f59e0b" },
+];
+
+const resumeHighlights = [
+  "参与 6 款产品前端开发",
+  "10 个业务岗位页面体系 + 权限隔离",
+  "SSE 流式语音识别 & TTS 播放",
+  "独立全栈开发壁纸平台（uni-app 双端 + Spring Boot）",
+  "自定义手势图片裁剪组件（Canvas 导出）",
+];
+
 export function Hero() {
-  const typed = useTypewriter(profile.taglines);
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   const [phoneDialogOpen, setPhoneDialogOpen] = useState(false);
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center lg:items-center lg:justify-start px-6 lg:px-12 xl:px-20 overflow-hidden"
+      className="relative min-h-screen overflow-hidden px-5 pt-24 pb-12 sm:px-6 lg:px-12 xl:px-20"
     >
-      {/* ── ambient glow layers ── */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-blue-500/[0.10] dark:bg-blue-500/[0.07] blur-[120px]" />
-        <div className="absolute top-[20%] left-[15%] w-[300px] h-[300px] rounded-full bg-indigo-500/[0.07] dark:bg-indigo-500/[0.05] blur-[100px]" />
-        <div className="absolute bottom-[15%] right-[10%] w-[250px] h-[250px] rounded-full bg-cyan-400/[0.06] dark:bg-cyan-400/[0.04] blur-[80px]" />
+      <div className="pointer-events-none absolute inset-0 hidden lg:block">
+        <div className="absolute left-[8%] top-[18%] h-52 w-52 rounded-full bg-sky-400/[0.08] blur-3xl" />
+        <div className="absolute right-[12%] bottom-[14%] h-64 w-64 rounded-full bg-indigo-400/[0.07] blur-3xl" />
       </div>
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[linear-gradient(180deg,rgba(59,130,246,0.08),transparent)] lg:hidden" />
 
-      {/* ── decorative orbit rings ── */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-          className="w-[520px] h-[520px] md:w-[680px] md:h-[680px] rounded-full border border-black/[0.04] dark:border-white/[0.03]"
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 flex items-center justify-center"
-        >
-          <div className="w-[380px] h-[380px] md:w-[500px] md:h-[500px] rounded-full border border-dashed border-black/[0.035] dark:border-white/[0.025]" />
-        </motion.div>
-        {/* orbit dot */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 flex items-center justify-center"
-        >
-          <div className="w-[520px] h-[520px] md:w-[680px] md:h-[680px] relative">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400/60 shadow-[0_0_8px_rgba(96,165,250,0.5)]" />
-          </div>
-        </motion.div>
-      </div>
-
-      {/* ── main content ── */}
       <motion.div
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 max-w-3xl lg:max-w-6xl mx-auto w-full flex flex-col lg:flex-row lg:items-center lg:gap-16 xl:gap-20"
+        className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 lg:min-h-[calc(100vh-9rem)] lg:flex-row lg:items-center lg:justify-between lg:gap-16"
       >
-        {/* ── Left column: text content ── */}
-        <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:flex-1 lg:max-w-xl xl:max-w-[600px]">
-        {/* Status pill */}
-        <motion.div variants={fadeUp} className="flex justify-center lg:justify-start mb-8">
-          <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-black/[0.10] dark:border-white/[0.08] bg-black/[0.04] dark:bg-white/[0.03] backdrop-blur-sm text-sm text-black/60 dark:text-white/70">
-            <span className="relative flex w-2 h-2">
-              <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-              <span className="relative inline-flex w-full h-full rounded-full bg-emerald-400" />
+        <div className="flex w-full max-w-2xl flex-col items-center text-center lg:items-start lg:text-left">
+          <motion.div variants={fadeUp} className="mb-6 flex justify-center lg:justify-start">
+            <div className="inline-flex items-center gap-2 rounded-full border border-black/[0.08] bg-white/70 px-4 py-2 text-sm text-zinc-600 shadow-sm backdrop-blur dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white/70">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-full w-full rounded-full bg-emerald-400" />
+              </span>
+              <span className="font-medium text-zinc-900 dark:text-white">Open to Work</span>
+              <span className="text-zinc-300 dark:text-white/25">|</span>
+              <span>前端开发 / 多端业务交付</span>
+            </div>
+          </motion.div>
+
+          <motion.h1
+            variants={fadeUp}
+            className="max-w-[12ch] text-4xl font-extrabold leading-tight tracking-normal text-zinc-950 sm:text-5xl md:text-6xl lg:max-w-none lg:text-7xl dark:text-white"
+          >
+            林春霞
+            <span className="mt-2 block text-xl font-semibold text-blue-600 sm:text-2xl md:text-3xl dark:text-blue-300">
+              前端开发工程师
             </span>
-            <span className="font-medium text-black/80 dark:text-white/90">Open to Work</span>
-            <span className="text-black/20 dark:text-white/30">|</span>
-            <span>前端 / 全栈</span>
-          </div>
-        </motion.div>
+          </motion.h1>
 
-        {/* Name */}
-        <motion.h1
-          variants={fadeUp}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08]"
-        >
-          <span className="text-black/50 dark:text-white/50 font-normal text-2xl sm:text-3xl md:text-4xl block mb-2 tracking-wide">
-            Hi, I&apos;m
-          </span>
-          <span className="bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-500 dark:from-white dark:via-white dark:to-white/60 bg-clip-text text-transparent">
-            {profile.nameEn}
-          </span>
-        </motion.h1>
-
-        {/* Chinese name + title */}
-        <motion.div
-          variants={fadeUp}
-          className="mt-4 flex items-center justify-center lg:justify-start gap-3 text-black/45 dark:text-white/40 text-sm md:text-base"
-        >
-          <span className="font-medium text-black/60 dark:text-white/70">{profile.name}</span>
-          <span className="w-1 h-1 rounded-full bg-black/15 dark:bg-white/20" />
-          <span>{profile.title}</span>
-        </motion.div>
-
-        {/* Typewriter */}
-        <motion.div
-          variants={fadeUp}
-          className="mt-8 flex justify-center lg:justify-start"
-        >
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-black/[0.04] dark:bg-white/[0.03] border border-black/[0.08] dark:border-white/[0.06] font-mono text-base md:text-lg">
-            <span className="text-blue-400 dark:text-blue-400 select-none">$</span>
-            <span className="text-black/70 dark:text-white/80">{typed}</span>
-            <span className="inline-block w-[2px] h-[1.1em] bg-blue-400/80 align-[-2px] animate-pulse" />
-          </div>
-        </motion.div>
-
-        {/* Bio */}
-        <motion.p
-          variants={fadeUp}
-          className="mt-8 max-w-xl mx-auto lg:mx-0 text-[15px] md:text-base text-black/55 dark:text-white/50 leading-[1.8]"
-        >
-          {profile.bio}
-        </motion.p>
-
-        {/* CTA buttons */}
-        <motion.div
-          variants={fadeUp}
-          className="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-3"
-        >
-          {/* Primary */}
-          <a
-            href="#projects"
-            className="group relative inline-flex items-center gap-2 px-7 py-3 rounded-full text-white font-medium text-[15px] overflow-hidden transition-shadow hover:shadow-lg hover:shadow-blue-500/25"
+          <motion.p
+            variants={fadeUp}
+            className="mt-6 max-w-xl text-[15px] leading-8 text-zinc-600 sm:text-base dark:text-white/58"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-500" />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <Sparkles
-              size={17}
-              className="relative z-10 group-hover:rotate-12 transition-transform"
-            />
-            <span className="relative z-10">查看作品</span>
-          </a>
+            2026 届软件工程技术本科生，熟悉 Vue 3、uni-app、Element Plus
+            与前端工程化。实习期间参与 Web 管理端、小程序和互动实训系统开发，能把业务流程拆成稳定、可交付的页面与组件。
+          </motion.p>
 
-          {/* Gitee */}
-          <a
-            href={profile.gitee}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-black/[0.10] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/[0.07] dark:hover:bg-white/[0.06] hover:border-black/[0.16] dark:hover:border-white/[0.14] transition-all text-[15px] text-black/60 dark:text-white/70 hover:text-black/80 dark:hover:text-white/90"
+          <motion.div variants={fadeUp} className="mt-6 w-full">
+            <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold text-zinc-400 dark:text-white/30">
+              <Sparkles size={12} />
+              核心能力
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {coreSkills.map((skill) => (
+                <div
+                  key={skill.label}
+                  className="inline-flex items-center gap-2 rounded-lg border border-black/[0.06] bg-white/60 px-3 py-2 shadow-sm backdrop-blur dark:border-white/[0.06] dark:bg-white/[0.03]"
+                >
+                  <skill.icon size={13} style={{ color: skill.accent }} />
+                  <div>
+                    <span className="text-xs font-semibold text-zinc-800 dark:text-white/80">{skill.label}</span>
+                    <span className="ml-1.5 text-[11px] text-zinc-400 dark:text-white/35">{skill.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="mt-7 w-full lg:hidden">
+            <MobileResumeCard />
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            className="mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start"
           >
-            <GiteeIcon size={17} className="text-[#c71d23]" />
-            Gitee
-          </a>
+            <a
+              href="#projects"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-950 px-6 py-3 text-[15px] font-semibold text-white shadow-lg shadow-zinc-950/10 transition hover:-translate-y-0.5 hover:bg-blue-600 dark:bg-white dark:text-zinc-950 dark:hover:bg-blue-200"
+            >
+              <Sparkles size={17} />
+              查看作品
+            </a>
+            <a
+              href={profile.gitee}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-black/[0.10] bg-white/70 px-5 py-3 text-[15px] font-medium text-zinc-700 transition hover:border-[#c71d23]/30 hover:text-[#c71d23] dark:border-white/[0.10] dark:bg-white/[0.04] dark:text-white/72"
+            >
+              <GiteeIcon size={17} className="text-[#c71d23]" />
+              Gitee
+            </a>
+            <button
+              onClick={() => setEmailDialogOpen(true)}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-black/[0.10] bg-white/70 px-5 py-3 text-[15px] font-medium text-zinc-700 transition hover:border-blue-500/25 hover:text-blue-600 dark:border-white/[0.10] dark:bg-white/[0.04] dark:text-white/72"
+            >
+              <Mail size={17} />
+              邮箱
+            </button>
+            <button
+              onClick={() => setPhoneDialogOpen(true)}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-black/[0.10] bg-white/70 px-5 py-3 text-[15px] font-medium text-zinc-700 transition hover:border-emerald-500/25 hover:text-emerald-600 dark:border-white/[0.10] dark:bg-white/[0.04] dark:text-white/72"
+            >
+              <Phone size={17} />
+              电话
+            </button>
+          </motion.div>
 
-          {/* Email */}
-          <button
-            onClick={() => setEmailDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-black/[0.10] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/[0.07] dark:hover:bg-white/[0.06] hover:border-black/[0.16] dark:hover:border-white/[0.14] transition-all text-[15px] text-black/60 dark:text-white/70 hover:text-black/80 dark:hover:text-white/90"
+          <motion.div
+            variants={fadeUp}
+            className="mt-5 flex items-center justify-center gap-1.5 text-xs text-zinc-400 lg:justify-start dark:text-white/30"
           >
-            <Mail size={17} />
-            邮箱
-          </button>
-
-          {/* Phone */}
-          <button
-            onClick={() => setPhoneDialogOpen(true)}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-black/[0.10] dark:border-white/[0.08] bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/[0.07] dark:hover:bg-white/[0.06] hover:border-black/[0.16] dark:hover:border-white/[0.14] transition-all text-[15px] text-black/60 dark:text-white/70 hover:text-black/80 dark:hover:text-white/90"
-          >
-            <Phone size={17} />
-            <span className="hidden sm:inline">{profile.phone}</span>
-            <span className="sm:hidden">电话</span>
-          </button>
-        </motion.div>
-
-        {/* Location */}
-        <motion.div
-          variants={fadeUp}
-          className="mt-6 flex items-center justify-center lg:justify-start gap-1.5 text-xs text-black/30 dark:text-white/25"
-        >
-          <MapPin size={12} />
-          <span>深圳</span>
-        </motion.div>
+            <MapPin size={13} />
+            <span>{profile.city}</span>
+          </motion.div>
         </div>
 
-        {/* ── Right column: decorative (desktop only) ── */}
         <motion.div
           variants={fadeUp}
-          className="hidden lg:flex lg:flex-1 items-center justify-center relative"
+          className="hidden flex-1 items-center justify-center lg:flex"
         >
-          {/* Code terminal card */}
-          <div className="relative z-10 w-[340px] xl:w-[400px] rounded-2xl border border-black/[0.08] dark:border-white/[0.06] bg-white/90 dark:bg-white/[0.02] backdrop-blur-md shadow-xl shadow-black/[0.06] dark:shadow-2xl dark:shadow-black/20 overflow-hidden">
-            {/* Title bar */}
-            <div className="flex items-center gap-1.5 px-4 py-3 border-b border-black/[0.06] dark:border-white/[0.05]">
-              <div className="w-3 h-3 rounded-full bg-red-400/70" />
-              <div className="w-3 h-3 rounded-full bg-yellow-400/70" />
-              <div className="w-3 h-3 rounded-full bg-green-400/70" />
-              <span className="ml-2.5 text-[11px] font-mono text-black/30 dark:text-white/25">portfolio.vue</span>
-            </div>
-            {/* Code body */}
-            <div className="px-5 py-4 font-mono text-[13px] leading-[1.8] text-black/45 dark:text-white/50 space-y-0.5">
-              <p><span className="text-purple-600/70 dark:text-purple-400/80">&lt;template&gt;</span></p>
-              <p className="pl-4"><span className="text-blue-600/60 dark:text-blue-400/70">&lt;div</span> <span className="text-amber-600/50 dark:text-yellow-300/60">class</span>=<span className="text-green-600/60 dark:text-green-400/70">"app"</span><span className="text-blue-600/60 dark:text-blue-400/70">&gt;</span></p>
-              <p className="pl-8"><span className="text-blue-600/60 dark:text-blue-400/70">&lt;Hero</span> <span className="text-amber-600/50 dark:text-yellow-300/60">name</span>=<span className="text-green-600/60 dark:text-green-400/70">"{profile.name}"</span> <span className="text-blue-600/60 dark:text-blue-400/70">/&gt;</span></p>
-              <p className="pl-8"><span className="text-blue-600/60 dark:text-blue-400/70">&lt;About</span> <span className="text-blue-600/60 dark:text-blue-400/70">/&gt;</span></p>
-              <p className="pl-8"><span className="text-blue-600/60 dark:text-blue-400/70">&lt;Skills</span> <span className="text-blue-600/60 dark:text-blue-400/70">/&gt;</span></p>
-              <p className="pl-8"><span className="text-blue-600/60 dark:text-blue-400/70">&lt;Projects</span> <span className="text-blue-600/60 dark:text-blue-400/70">/&gt;</span></p>
-              <p className="pl-8"><span className="text-blue-600/60 dark:text-blue-400/70">&lt;Showcase</span> <span className="text-blue-600/60 dark:text-blue-400/70">/&gt;</span></p>
-              <p className="pl-4"><span className="text-blue-600/60 dark:text-blue-400/70">&lt;/div&gt;</span></p>
-              <p><span className="text-purple-600/70 dark:text-purple-400/80">&lt;/template&gt;</span></p>
-            </div>
-          </div>
-
-          {/* Decorative orbit rings */}
-          <div className="absolute -right-10 -top-10 w-[320px] h-[320px] xl:w-[420px] xl:h-[420px] pointer-events-none">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-              className="w-full h-full rounded-full border border-black/[0.06] dark:border-white/[0.03]"
-            />
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-6 rounded-full border border-dashed border-black/[0.04] dark:border-white/[0.025]"
-            />
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0"
-            >
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-blue-400/50 shadow-[0_0_10px_rgba(96,165,250,0.4)]" />
-            </motion.div>
-          </div>
-
-          {/* Subtle glow behind card */}
-          <div className="absolute w-[260px] h-[260px] rounded-full bg-blue-500/[0.08] dark:bg-blue-500/[0.06] blur-[80px] pointer-events-none" />
+          <ResumePreviewCard />
         </motion.div>
       </motion.div>
 
-      {/* ── dialogs ── */}
       <ContactDialog
         isOpen={emailDialogOpen}
         onClose={() => setEmailDialogOpen(false)}
@@ -290,18 +200,15 @@ export function Hero() {
         actionHref={`tel:${profile.phone}`}
       />
 
-      {/* ── scroll indicator ── */}
       <motion.a
         href="#about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-black/15 dark:text-white/20 hover:text-black/50 dark:hover:text-white/60 transition-colors"
+        transition={{ delay: 1.1 }}
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-zinc-300 transition hover:text-zinc-600 md:flex dark:text-white/18 dark:hover:text-white/60"
         aria-label="滚动到下一节"
       >
-        <span className="text-[10px] font-mono tracking-[0.2em] uppercase">
-          Scroll
-        </span>
+        <span className="text-[10px] font-mono uppercase tracking-[0.2em]">Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -310,5 +217,160 @@ export function Hero() {
         </motion.div>
       </motion.a>
     </section>
+  );
+}
+
+function ResumePreviewCard() {
+  return (
+    <div className="relative w-[360px] xl:w-[420px]">
+      <div className="absolute -left-8 top-10 h-32 w-32 rounded-full bg-blue-500/10 blur-3xl" />
+      <div className="absolute -right-7 bottom-12 h-40 w-40 rounded-full bg-sky-400/10 blur-3xl" />
+      <div className="absolute -top-5 left-1/2 z-20 h-10 w-36 -translate-x-1/2 -rotate-2 rounded-sm border border-amber-200/60 bg-amber-100/65 shadow-sm backdrop-blur-[2px] dark:border-amber-100/20 dark:bg-amber-100/25" />
+      <div className="absolute -bottom-3 left-10 h-8 w-28 rotate-6 rounded-sm border border-blue-100/70 bg-blue-100/45 shadow-sm backdrop-blur-[2px] dark:border-blue-100/20 dark:bg-blue-100/15" />
+
+      <div className="relative z-10 rotate-[-1.8deg] overflow-hidden rounded-[6px] border border-zinc-200 bg-[#fffdf8] p-6 text-zinc-800 shadow-2xl shadow-zinc-950/16 transition duration-500 hover:rotate-0 dark:border-white/10 dark:bg-[#f8fafc]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(37,99,235,0.06),transparent_28%),linear-gradient(90deg,rgba(15,23,42,0.035)_1px,transparent_1px)] bg-[length:auto,18px_18px]" />
+        <div className="relative">
+          <div className="flex items-start justify-between gap-4 border-b-2 border-blue-600 pb-3">
+            <div>
+              <h3 className="text-2xl font-bold tracking-normal text-zinc-950">林春霞</h3>
+              <p className="mt-1 text-sm font-semibold text-blue-700">前端开发工程师</p>
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-zinc-600">
+                <span>22岁</span>
+                <span>{profile.phone}</span>
+                <span>{profile.email}</span>
+              </div>
+            </div>
+            <div className="flex h-16 w-13 shrink-0 items-center justify-center rounded-sm bg-blue-50 text-[10px] font-semibold text-blue-700 ring-1 ring-blue-100">
+              RESUME
+            </div>
+          </div>
+
+          <ResumeSection title="教育经历">
+            <p className="text-[12px] leading-5">
+              <strong>湖南软件职业技术大学</strong> | 软件工程技术 | 本科
+              <span className="float-right text-zinc-500">2022.09 - 2026.06</span>
+            </p>
+            <p className="mt-1 text-[11px] text-zinc-600">国家励志奖学金，软件设计师，CET-4</p>
+          </ResumeSection>
+
+          <ResumeSection title="实习经历">
+            <ResumeLine
+              name="深圳市天择教育科技有限公司"
+              meta="前端开发工程师"
+              desc={
+                <>
+                  参与 <strong>6 款产品</strong>前端开发，负责页面搭建、接口联调、权限控制与性能优化。
+                </>
+              }
+            />
+            <ResumeLine
+              name="数智财经运营决策实战系统"
+              meta="Vue 3 / Pinia / ECharts"
+              desc={
+                <>
+                  搭建 <strong>10 个业务岗位</strong>页面，完成 5 个核心岗位接口与团队权限隔离。
+                </>
+              }
+            />
+            <ResumeLine
+              name="AI 智能陪练平台"
+              meta="SSE / TTS / ECharts"
+              desc={
+                <>
+                  集成 <strong>SSE 流式语音识别</strong>、手机模拟器、训练进度和成绩复盘。
+                </>
+              }
+            />
+          </ResumeSection>
+
+          <ResumeSection title="项目经历">
+            <ResumeLine
+              name="橘子壁纸分享平台"
+              meta="独立全栈开发"
+              desc={
+                <>
+                  <strong>独立全栈开发</strong>小程序/H5/后台/后端，完成投稿审核、OSS 图片处理和
+                  <strong> imageCropper 图片裁剪组件</strong>。
+                </>
+              }
+            />
+          </ResumeSection>
+
+          <ResumeSection title="核心能力">
+            <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] leading-5 text-zinc-600">
+              <span>Vue 3 / Pinia / Element Plus</span>
+              <span>uni-app 小程序 / H5 双端</span>
+              <span>ECharts 数据可视化</span>
+              <span>Spring Boot 全栈开发</span>
+              <span>AI 工具协同开发</span>
+            </div>
+          </ResumeSection>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MobileResumeCard() {
+  return (
+    <div className="relative mx-auto max-w-md rounded-[8px] border border-zinc-200 bg-[#fffdf8] p-5 text-left text-zinc-800 shadow-xl shadow-zinc-950/10 dark:border-white/10">
+      <div className="absolute -top-3 left-8 h-7 w-24 -rotate-3 rounded-sm border border-amber-200/70 bg-amber-100/70 backdrop-blur-[2px]" />
+      <div className="relative">
+        <div className="flex items-center gap-2 border-b-2 border-blue-600 pb-3">
+          <FileText size={17} className="text-blue-700" />
+          <div>
+            <p className="text-sm font-bold text-zinc-950">简历速览</p>
+            <p className="text-[11px] text-zinc-500">前端开发 / 2026 届 / 多端业务交付</p>
+          </div>
+        </div>
+        <div className="mt-4 grid gap-3 text-xs">
+          {resumeHighlights.map((item) => (
+            <div key={item} className="flex items-start gap-2">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" />
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ResumeSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mt-4">
+      <div className="mb-2 flex items-center gap-2 text-[12px] font-bold text-blue-700">
+        <span className="h-3.5 w-[3px] rounded-full bg-blue-700" />
+        {title}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function ResumeLine({
+  name,
+  meta,
+  desc,
+}: {
+  name: string;
+  meta: string;
+  desc: React.ReactNode;
+}) {
+  return (
+    <div className="mb-2.5">
+      <div className="flex items-center justify-between gap-3 text-[12px]">
+        <strong className="min-w-0 truncate text-zinc-900">{name}</strong>
+        <span className="shrink-0 text-[10px] font-semibold text-blue-700">{meta}</span>
+      </div>
+      <p className="mt-1 text-[11px] leading-5 text-zinc-600">{desc}</p>
+    </div>
   );
 }

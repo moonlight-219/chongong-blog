@@ -1,6 +1,6 @@
 export type Skill = {
   name: string;
-  level: 1 | 2 | 3 | 4 | 5; // 1=了解,5=精通
+  level: 1 | 2 | 3 | 4 | 5;
   category: "frontend" | "backend" | "mobile" | "language" | "tool";
   color: string;
 };
@@ -23,14 +23,14 @@ export const skills: Skill[] = [
   { name: "TypeScript", level: 4, category: "language", color: "#3178c6" },
   { name: "Java", level: 3, category: "backend", color: "#f89820" },
   { name: "Node.js", level: 3, category: "backend", color: "#339933" },
+  { name: "Spring Boot", level: 3, category: "backend", color: "#6db33f" },
+  { name: "MySQL", level: 4, category: "backend", color: "#00758f" },
+  { name: "Nginx", level: 3, category: "backend", color: "#009639" },
   { name: "uni-app", level: 5, category: "mobile", color: "#2b9cf2" },
   { name: "Vite", level: 4, category: "tool", color: "#646cff" },
   { name: "Webpack", level: 3, category: "tool", color: "#1c78c0" },
   { name: "Git", level: 4, category: "tool", color: "#f05033" },
   { name: "AI 辅助开发", level: 4, category: "tool", color: "#8b5cf6" },
-  { name: "Spring Boot", level: 3, category: "backend", color: "#6db33f" },
-  { name: "MySQL", level: 4, category: "backend", color: "#00758f" },
-  { name: "Nginx", level: 3, category: "backend", color: "#009639" },
 ];
 
 export const skillCategories: { key: Skill["category"]; label: string }[] = [

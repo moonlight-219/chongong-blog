@@ -2,13 +2,13 @@
 
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import { Github, ExternalLink, Building2, X } from "lucide-react";
+import { Building2, ExternalLink, Github, X } from "lucide-react";
 import { GiteeIcon } from "./icons/Gitee";
 import { SectionWrapper } from "./SectionWrapper";
 import { FilterTabs, type FilterOption } from "./FilterTabs";
 import {
-  projects,
   allTags,
+  projects,
   type Project,
   type ProjectTag,
 } from "@/data/projects";
@@ -34,23 +34,31 @@ export function Projects() {
   const filtered = useMemo(() => {
     switch (filter) {
       case "demo":
-        return projects.filter((p) => hasDemo(p));
+        return projects.filter((project) => hasDemo(project));
       case "source":
-        return projects.filter((p) => p.github && !p.isCompanyProject);
+        return projects.filter((project) => project.github && !project.isCompanyProject);
       case "company":
-        return projects.filter((p) => p.isCompanyProject);
+        return projects.filter((project) => project.isCompanyProject);
       default:
         return filter === "all"
           ? projects
-          : projects.filter((p) => p.tags.includes(filter as ProjectTag));
+          : projects.filter((project) => project.tags.includes(filter as ProjectTag));
     }
   }, [filter]);
 
   const typeOptions: FilterOption<ProjectFilter>[] = [
     { key: "all", label: "全部", count: projects.length },
-    { key: "demo", label: "可预览", count: projects.filter((p) => hasDemo(p)).length },
-    { key: "source", label: "有源码", count: projects.filter((p) => p.github && !p.isCompanyProject).length },
-    { key: "company", label: "公司项目", count: projects.filter((p) => p.isCompanyProject).length },
+    { key: "demo", label: "可预览", count: projects.filter((project) => hasDemo(project)).length },
+    {
+      key: "source",
+      label: "有源码",
+      count: projects.filter((project) => project.github && !project.isCompanyProject).length,
+    },
+    {
+      key: "company",
+      label: "公司项目",
+      count: projects.filter((project) => project.isCompanyProject).length,
+    },
   ];
 
   const tagOptions = useMemo<FilterOption<ProjectFilter>[]>(
@@ -59,29 +67,30 @@ export function Projects() {
         .map((tag) => ({
           key: tag,
           label: tag,
-          count: projects.filter((p) => p.tags.includes(tag)).length,
+          count: projects.filter((project) => project.tags.includes(tag)).length,
         }))
-        .filter((o) => o.count > 0),
+        .filter((option) => option.count > 0),
     []
   );
 
-  // Map projects to ChromaGrid items
   const chromaItems = useMemo(
     () =>
-      filtered.map((p) => ({
-        ...p,
-        borderColor: p.gradient[0],
-        gradient: `linear-gradient(145deg, ${p.gradient[0]}, #0a0a0f)`,
+      filtered.map((project) => ({
+        ...project,
+        borderColor: project.gradient[0],
+        gradient: `linear-gradient(145deg, ${project.gradient[0]}, #0a0a0f)`,
         url: "",
-        onItemClick: p.isCompanyProject
-          ? () => setDialog({ type: "company", project: p.name })
+        onItemClick: project.isCompanyProject
+          ? () => setDialog({ type: "company", project: project.name })
           : () => {
-              const demoUrl = (p.demo ?? p.demoDesktop ?? p.demoMobile) as string | undefined;
+              const demoUrl = (project.demo ??
+                project.demoDesktop ??
+                project.demoMobile) as string | undefined;
               setDialog({
                 type: "card",
-                project: p.name,
+                project: project.name,
                 demoUrl: demoUrl || undefined,
-                sourceUrl: p.github || undefined,
+                sourceUrl: project.github || undefined,
               });
             },
       })),
@@ -103,163 +112,151 @@ export function Projects() {
 
   return (
     <>
-    <SectionWrapper id="projects" title="项目作品">
-      <p className="opacity-50 -mt-6 mb-8 max-w-lg text-sm">
-        收录部分项目，鼠标移入查看彩色效果
-      </p>
+      <SectionWrapper id="projects" title="项目作品">
+        <p className="-mt-6 mb-8 max-w-lg text-sm opacity-50">
+          收录部分项目，鼠标移入卡片可查看高亮效果。
+        </p>
 
-      {/* Filter tabs */}
-      <div className="space-y-3 mb-8">
-        <FilterTabs
-          layoutGroupId="projects-type"
-          options={typeOptions}
-          value={filter}
-          onChange={setFilter}
-          prefix="类型"
-        />
-        <FilterTabs
-          layoutGroupId="projects-tag"
-          options={tagOptions}
-          value={filter}
-          onChange={setFilter}
-          prefix="标签"
-        />
-      </div>
-
-      {/* ChromaGrid project cards */}
-      <ChromaGrid
-        items={chromaItems}
-        radius={350}
-        damping={0.45}
-        fadeOut={0.6}
-        renderItem={(item: any) => (
-          <ProjectCard
-            project={item as Project & { gradient: string; borderColor: string; url: string }}
-            onSourceClick={handleSourceClick}
-            onDemoClick={handleDemoClick}
+        <div className="mb-8 space-y-3">
+          <FilterTabs
+            layoutGroupId="projects-type"
+            options={typeOptions}
+            value={filter}
+            onChange={setFilter}
+            prefix="类型"
           />
-        )}
-      />
-    </SectionWrapper>
+          <FilterTabs
+            layoutGroupId="projects-tag"
+            options={tagOptions}
+            value={filter}
+            onChange={setFilter}
+            prefix="标签"
+          />
+        </div>
 
-    {/* Centered dialog — rendered at root level for proper viewport centering */}
-    {dialog && (
-      <div className="fixed inset-0 z-[80] flex items-center justify-center px-4">
-        {/* Backdrop */}
-        <div
-          className="absolute inset-0 bg-black/50 dark:bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-          onClick={() => setDialog(null)}
+        <ChromaGrid
+          items={chromaItems}
+          radius={350}
+          damping={0.45}
+          fadeOut={0.6}
+          renderItem={(item: any) => (
+            <ProjectCard
+              project={item as Project & { gradient: string; borderColor: string; url: string }}
+              onSourceClick={handleSourceClick}
+              onDemoClick={handleDemoClick}
+            />
+          )}
         />
-        {/* Dialog panel */}
-        <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 border border-black/[0.06] dark:border-white/[0.08] shadow-2xl animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
-          {/* Gradient top accent */}
-          <div className="h-1 w-full bg-gradient-to-r from-blue-500 to-indigo-500" />
+      </SectionWrapper>
 
-          <div className="p-6">
-            {/* Close button */}
-            <button
-              onClick={() => setDialog(null)}
-              className="absolute top-3 right-3 w-7 h-7 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-              aria-label="关闭"
-            >
-              <X size={15} />
-            </button>
+      {dialog && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center px-4">
+          <div
+            className="absolute inset-0 animate-in fade-in bg-black/50 backdrop-blur-sm duration-200 dark:bg-black/60"
+            onClick={() => setDialog(null)}
+          />
+          <div className="relative z-10 w-full max-w-sm animate-in overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-2xl fade-in zoom-in-95 duration-200 dark:border-white/[0.08] dark:bg-zinc-900">
+            <div className="h-1 w-full bg-gradient-to-r from-blue-500 to-indigo-500" />
 
-            {/* Project name */}
-            <h4 className="text-base font-bold tracking-tight mb-1.5">{dialog.project}</h4>
-
-            {/* Message */}
-            {dialog.type === "company" && (
-              <p className="text-sm opacity-60 leading-relaxed">
-                该项目为公司项目，暂不提供代码查看。
-              </p>
-            )}
-            {dialog.type === "source" && (
-              <p className="text-sm opacity-60 leading-relaxed">
-                即将前往源码仓库，确认跳转？
-              </p>
-            )}
-            {dialog.type === "demo" && (
-              <p className="text-sm opacity-60 leading-relaxed">
-                即将前往预览页面，确认跳转？
-              </p>
-            )}
-            {dialog.type === "card" && (
-              <p className="text-sm opacity-60 leading-relaxed">
-                选择要执行的操作：
-              </p>
-            )}
-
-            {/* Actions */}
-            <div className="mt-5 flex items-center flex-wrap gap-2.5">
-              {dialog.type === "source" && (
-                <a
-                  href={dialog.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => setDialog(null)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
-                >
-                  <Github size={14} />
-                  查看源码
-                </a>
-              )}
-              {dialog.type === "demo" && (
-                <a
-                  href={dialog.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => setDialog(null)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
-                >
-                  <ExternalLink size={14} />
-                  前往预览
-                </a>
-              )}
-              {dialog.type === "card" && dialog.demoUrl && (
-                <a
-                  href={dialog.demoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => setDialog(null)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white text-sm font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-shadow"
-                >
-                  <ExternalLink size={14} />
-                  前往预览
-                </a>
-              )}
-              {dialog.type === "card" && dialog.sourceUrl && (
-                <a
-                  href={dialog.sourceUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => setDialog(null)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-medium hover:shadow-lg transition-shadow"
-                >
-                  {dialog.sourceUrl.includes("gitee.com") ? (
-                    <GiteeIcon size={14} />
-                  ) : (
-                    <Github size={14} />
-                  )}
-                  查看源码
-                </a>
-              )}
+            <div className="p-6">
               <button
                 onClick={() => setDialog(null)}
-                className="inline-flex items-center px-4 py-2 rounded-lg border border-black/[0.08] dark:border-white/[0.1] text-sm font-medium opacity-70 hover:opacity-100 hover:bg-black/[0.03] dark:hover:bg-white/[0.05] transition-all"
+                className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-black/5 hover:text-zinc-600 dark:hover:bg-white/5 dark:hover:text-zinc-200"
+                aria-label="关闭"
               >
-                关闭
+                <X size={15} />
               </button>
+
+              <h4 className="mb-1.5 text-base font-bold tracking-tight">{dialog.project}</h4>
+
+              {dialog.type === "company" && (
+                <p className="text-sm leading-relaxed opacity-60">
+                  该项目为公司项目，暂不提供代码查看。
+                </p>
+              )}
+              {dialog.type === "source" && (
+                <p className="text-sm leading-relaxed opacity-60">
+                  即将前往源码仓库，确认跳转吗？
+                </p>
+              )}
+              {dialog.type === "demo" && (
+                <p className="text-sm leading-relaxed opacity-60">
+                  即将前往预览页面，确认跳转吗？
+                </p>
+              )}
+              {dialog.type === "card" && (
+                <p className="text-sm leading-relaxed opacity-60">
+                  请选择要查看的内容。
+                </p>
+              )}
+
+              <div className="mt-5 flex flex-wrap items-center gap-2.5">
+                {dialog.type === "source" && (
+                  <a
+                    href={dialog.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setDialog(null)}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2 text-sm font-medium text-white transition-shadow hover:shadow-lg hover:shadow-blue-500/25"
+                  >
+                    <Github size={14} />
+                    查看源码
+                  </a>
+                )}
+                {dialog.type === "demo" && (
+                  <a
+                    href={dialog.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setDialog(null)}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2 text-sm font-medium text-white transition-shadow hover:shadow-lg hover:shadow-blue-500/25"
+                  >
+                    <ExternalLink size={14} />
+                    前往预览
+                  </a>
+                )}
+                {dialog.type === "card" && dialog.demoUrl && (
+                  <a
+                    href={dialog.demoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setDialog(null)}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2 text-sm font-medium text-white transition-shadow hover:shadow-lg hover:shadow-blue-500/25"
+                  >
+                    <ExternalLink size={14} />
+                    前往预览
+                  </a>
+                )}
+                {dialog.type === "card" && dialog.sourceUrl && (
+                  <a
+                    href={dialog.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => setDialog(null)}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-800 px-4 py-2 text-sm font-medium text-white transition-shadow hover:shadow-lg dark:bg-zinc-200 dark:text-zinc-900"
+                  >
+                    {dialog.sourceUrl.includes("gitee.com") ? (
+                      <GiteeIcon size={14} />
+                    ) : (
+                      <Github size={14} />
+                    )}
+                    查看源码
+                  </a>
+                )}
+                <button
+                  onClick={() => setDialog(null)}
+                  className="inline-flex items-center rounded-lg border border-black/[0.08] px-4 py-2 text-sm font-medium opacity-70 transition-all hover:bg-black/[0.03] hover:opacity-100 dark:border-white/[0.1] dark:hover:bg-white/[0.05]"
+                >
+                  关闭
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    )}
+      )}
     </>
   );
 }
-
-/* -- Inline Project Card (no modal) -- */
 
 interface ProjectCardProps {
   project: Project;
@@ -268,12 +265,10 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, onSourceClick, onDemoClick }: ProjectCardProps) {
-  const demoLink =
-    project.demo ?? project.demoDesktop ?? project.demoMobile;
+  const demoLink = project.demo ?? project.demoDesktop ?? project.demoMobile;
 
   return (
     <div className="chroma-project">
-      {/* Gradient accent line */}
       <div
         className="chroma-accent-line"
         style={{
@@ -282,7 +277,6 @@ function ProjectCard({ project, onSourceClick, onDemoClick }: ProjectCardProps) 
       />
 
       <div className="chroma-project-body">
-        {/* Header */}
         <div className="chroma-project-header">
           <div className="min-w-0">
             <h3 className="chroma-project-title">{project.name}</h3>
@@ -291,7 +285,10 @@ function ProjectCard({ project, onSourceClick, onDemoClick }: ProjectCardProps) 
           <div className="chroma-project-links">
             {!project.isCompanyProject && project.github && (
               <button
-                onClick={(e) => { e.stopPropagation(); onSourceClick(project); }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onSourceClick(project);
+                }}
                 aria-label="源码"
               >
                 {project.github.includes("gitee.com") ? (
@@ -303,7 +300,10 @@ function ProjectCard({ project, onSourceClick, onDemoClick }: ProjectCardProps) 
             )}
             {demoLink && (
               <button
-                onClick={(e) => { e.stopPropagation(); onDemoClick(project); }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onDemoClick(project);
+                }}
                 aria-label="在线预览"
               >
                 <ExternalLink size={14} />
@@ -318,23 +318,19 @@ function ProjectCard({ project, onSourceClick, onDemoClick }: ProjectCardProps) 
           </div>
         </div>
 
-        {/* Description */}
         <p className="chroma-project-desc">{project.description}</p>
 
-        {/* Bottom: tags + stack */}
         <div className="chroma-project-bottom">
           <div className="chroma-project-tags">
-            {project.tags.map((t) => (
-              <span key={t}>#{t}</span>
+            {project.tags.map((tag) => (
+              <span key={tag}>#{tag}</span>
             ))}
           </div>
           <div className="chroma-project-stack">
-            {project.stack.slice(0, 5).map((s) => (
-              <span key={s}>{s}</span>
+            {project.stack.slice(0, 5).map((stack) => (
+              <span key={stack}>{stack}</span>
             ))}
-            {project.stack.length > 5 && (
-              <span>+{project.stack.length - 5}</span>
-            )}
+            {project.stack.length > 5 && <span>+{project.stack.length - 5}</span>}
           </div>
         </div>
       </div>

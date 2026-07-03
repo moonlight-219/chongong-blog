@@ -9,7 +9,7 @@ import { GalaxyBackground } from "@/components/GalaxyBackground";
 import { profile } from "@/data/profile";
 
 export const metadata: Metadata = {
-  title: `${profile.name} · 个人博客与作品集`,
+  title: `${profile.name} | 个人作品集`,
   description: profile.bio,
 };
 

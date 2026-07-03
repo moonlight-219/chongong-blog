@@ -1,8 +1,13 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, Mail, Phone } from "lucide-react";
+import { Check, Copy, Mail, Phone } from "lucide-react";
 import { useState } from "react";
 
 interface ContactDialogProps {
@@ -48,11 +53,15 @@ export default function ContactDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[90vw] sm:max-w-sm p-0 overflow-hidden gap-0" style={{ borderColor: "var(--border-subtle)" }}>
-        {/* Banner */}
-        <div className={`flex flex-col items-center gap-3 bg-gradient-to-b ${bannerGradient} px-6 pt-9 pb-6`}>
+      <DialogContent
+        className="w-[90vw] gap-0 overflow-hidden p-0 sm:max-w-sm"
+        style={{ borderColor: "var(--border-subtle)" }}
+      >
+        <div
+          className={`flex flex-col items-center gap-3 bg-gradient-to-b ${bannerGradient} px-6 pb-6 pt-9`}
+        >
           <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            className="flex h-14 w-14 items-center justify-center rounded-2xl"
             style={iconStyle}
           >
             <Icon size={26} />
@@ -60,29 +69,20 @@ export default function ContactDialog({
           <DialogTitle className="text-base font-semibold">{title}</DialogTitle>
         </div>
 
-        {/* Body */}
-        <div className="px-5 pt-4 pb-6 space-y-3">
-          <DialogDescription className="text-center font-mono text-sm font-semibold tracking-wide py-3 px-4 rounded-xl bg-black/[0.05] dark:bg-white/[0.07] text-[var(--foreground)]">
+        <div className="space-y-3 px-5 pb-6 pt-4">
+          <DialogDescription className="rounded-xl bg-black/[0.05] px-4 py-3 text-center font-mono text-sm font-semibold tracking-wide text-[var(--foreground)] dark:bg-white/[0.07]">
             {content}
           </DialogDescription>
 
-          <Button
-            onClick={handleCopy}
-            variant="outline"
-            className="w-full gap-2 h-10"
-          >
-            {copied ? (
-              <Check size={15} className="text-green-500" />
-            ) : (
-              <Copy size={15} />
-            )}
-            {copied ? "已复制!" : "复制"}
+          <Button onClick={handleCopy} variant="outline" className="h-10 w-full gap-2">
+            {copied ? <Check size={15} className="text-green-500" /> : <Copy size={15} />}
+            {copied ? "已复制" : "复制"}
           </Button>
 
           {actionLabel && actionHref && (
             <Button
               asChild
-              className="w-full h-10 bg-gradient-to-r from-indigo-500 to-pink-500 border-0 text-white hover:opacity-90 hover:bg-none"
+              className="h-10 w-full border-0 bg-gradient-to-r from-indigo-500 to-blue-500 text-white hover:opacity-90"
             >
               <a href={actionHref} onClick={onClose}>
                 {actionLabel}
